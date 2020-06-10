@@ -1,5 +1,11 @@
 # DCGAN :: modello a risoluzione maggiore
 
+## 10 giugno 2020
+
+Il file dei parametri non necessita di settare il numero di strati k
+
+Viene creata una directory con dettagli e risultati del run
+
 ## 17 febbraio 2020
 
 Lanciato su macchina Deep un apprendimento su celeba-HQ 1024 x 1024 per generare immagini 128 x 128.
