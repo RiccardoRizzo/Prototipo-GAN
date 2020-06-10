@@ -26,9 +26,10 @@ nc : 3
 # Size of z latent vector (i.e. size of generator input)
 nz : 100
 
-# Size of feature maps in generator
+# Size of feature maps in generator (ngf) and discriminator (ndf)
+# Il numero di kernel influisce sulla grandezza dei layer delle reti, ma non sulla
+# grandezza della immagine
 ngf : 128
-# Size of feature maps in discriminator
 ndf : 128
   
 # Number of training epochs

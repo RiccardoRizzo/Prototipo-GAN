@@ -5,6 +5,7 @@
 Il file dei parametri non necessita di settare il numero di strati k
 
 Viene creata una directory con dettagli e risultati del run
+I risultati sono variabili, e' necessario fare altri esperimenti
 
 ## 17 febbraio 2020
 
