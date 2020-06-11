@@ -1,7 +1,9 @@
 # DCGAN :: modello a risoluzione maggiore
 
 ## 11 giugno 2020
+Usata spectral norm gia' presente in pytorch
 
+Aggiunto dropout nel Discriminatore
 
 ## 10 giugno 2020
 
