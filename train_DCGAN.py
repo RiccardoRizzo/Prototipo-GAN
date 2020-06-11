@@ -245,8 +245,12 @@ def main(pl, paramFile):
             # Output training stats
             if i % 50 == 0:
                 print('[%d/%d][%d/%d]\tLoss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f'
-                    % (epoch, pl["num_epochs"], i, len(dataloader),
-                        errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
+                    % (epoch, pl["num_epochs"], 
+                        i, len(dataloader),
+                        # Loss_D    Loss_G
+                        errD.item(), errG.item(), 
+                        #D(x)   D(G(z))
+                        D_x,    D_G_z1, D_G_z2))
 
             # Save Losses for plotting later
             G_losses.append(errG.item())
