@@ -5,6 +5,8 @@ Usata spectral norm gia' presente in pytorch
 
 Aggiunto dropout nel Discriminatore
 
+Aggiunto programma per il plot delle loss di D e G
+
 ## 10 giugno 2020
 
 * train_DCGAN.py
