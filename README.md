@@ -10,9 +10,12 @@
 
 * Modelli
 Contiene le reti; i file sono:
-      * Layers.py :  il codice dei vari strati di G e D
-      * GenDis***.py : le reti Generatore e Discriminatore costruite usando gli strati e altri moduli
-      * spectral.py : codice della norma spettrale
+
+  * Layers.py :  il codice dei vari strati di G e D
+  
+  * GenDis***.py : le reti Generatore e Discriminatore costruite usando gli strati e altri moduli
+  
+  * spectral.py : codice della norma spettrale
 
 
 Il file dei parametri non necessita di settare il numero di strati k
