@@ -98,7 +98,7 @@ def main(pl, paramFile):
 
     # creazione della directory dell'esperimento ==================================
     today = datetime.now()
-    nomeDir = "./" + pl["nomeModello"] +"_" +today.strftime('%Y_%m_%d_%H_%M')
+    nomeDir = "./" + pl["nomeModello"] + "_" +today.strftime('%Y_%m_%d_%H_%M')
     os.mkdir(nomeDir)
     # copio il file di parametri nella dir dell'esperimento
     newPath = shutil.copy(paramFile, nomeDir)
