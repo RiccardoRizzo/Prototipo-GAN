@@ -29,9 +29,9 @@ class Discriminator(nn.Module):
 
         #--------------------------------------------
         for i in range(k):
-            layers.append(ll.DisLayerSN(ndf, i))
+            layers.append(ll.DisLayerSN_d(ndf, i))
         #--------------------------------------------
-        
+
         d_out = 2**k
         layers.append(nn.Conv2d(ndf * d_out, 1, 4, stride=1, padding=0, bias=False))
         layers.append(nn.Sigmoid())

@@ -14,6 +14,26 @@ import spectral as sp
 
 
 
+def DisLayerSN_d(ndf, k):
+    """
+    Layer che usa la spectral norm
+    """
+    d_in = 2**k 
+    d_out = 2**(k+1)
+
+    out = nn.Sequential(nn.utils.spectral_norm(nn.Conv2d(ndf*d_in, ndf*d_out, 4, stride=2, padding=1, bias=False)),                        
+                        nn.Dropout2d(),
+                        nn.BatchNorm2d(ndf * d_out), 
+                        nn.LeakyReLU(0.2, inplace=True) )
+    # RIGUARDO LE DIMENSIONI
+    # in nn.Conv2d(ndf * d_in, ndf * d_out, 4, 2, 1, bias=False)
+    # kernel_size = 4, stride = 2, padding = 1
+    # se kernel size = stride + 2* padding (come e') allora la dimensione di uscita della immagine e'
+    # H_out = H_in / stride
+    # W_out = W_out / stride
+    return out
+
+
 def DisLayerSN(ndf, k):
     """
     Layer che usa la spectral norm
@@ -21,7 +41,7 @@ def DisLayerSN(ndf, k):
     d_in = 2**k 
     d_out = 2**(k+1)
 
-    out = nn.Sequential(nn.utils.spectral_norm(nn.Conv2d(ndf*d_in, ndf*d_out, 4, stride=2, padding=1, bias=False)), 
+    out = nn.Sequential(nn.utils.spectral_norm(nn.Conv2d(ndf*d_in, ndf*d_out, 4, stride=2, padding=1, bias=False)),                        
                         nn.BatchNorm2d(ndf * d_out), 
                         nn.LeakyReLU(0.2, inplace=True) )
     # RIGUARDO LE DIMENSIONI
