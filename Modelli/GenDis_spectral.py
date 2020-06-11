@@ -27,10 +27,11 @@ class Discriminator(nn.Module):
         layers.append(nn.LeakyReLU(0.2, inplace=True))
         # state size. (ndf) x 64 x 64
 
-
+        #--------------------------------------------
         for i in range(k):
             layers.append(ll.DisLayerSN(ndf, i))
-
+        #--------------------------------------------
+        
         d_out = 2**k
         layers.append(nn.Conv2d(ndf * d_out, 1, 4, stride=1, padding=0, bias=False))
         layers.append(nn.Sigmoid())
@@ -66,11 +67,11 @@ class Generator(nn.Module):
         layers.append( nn.ReLU(True) )
         # state size. (ngf*16) x 4 x 4
             
-        
+        #------------------------------------------
         for i in range(k):
             n = k-i 
             layers.append( ll.GenLayerSN(ngf, n) )
-
+        #------------------------------------------
             
         layers.append(nn.ConvTranspose2d(    ngf,      nc, 4, 2, 1, bias=False) )
         layers.append(nn.Tanh() )

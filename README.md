@@ -20,7 +20,8 @@ Contiene le reti; i file sono:
 
 Il file dei parametri non necessita di settare il numero di strati k
 Il file parametri_BASE.yaml e' quello da clonare e modificare per gli esperimenti.
-Tutti i commenti e le modifiche sostanziali vanno fatte prima in questo file, in modcontiene o da renderle permanenti. 
+Tutti i commenti e le modifiche sostanziali vanno fatte prima in questo file, in modo da renderle permanenti. 
+
 
 Viene creata una directory con dettagli e risultati del run
 I risultati sono variabili, e' necessario fare altri esperimenti.
