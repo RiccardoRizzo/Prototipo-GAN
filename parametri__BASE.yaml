@@ -40,6 +40,8 @@ lrd : 0.0002
 lrg : 0.0002
 
 # Beta1 hyperparam for Adam optimizers
+# sembra che un valore accettabile per beta1 sia 0.5 
+# https://arxiv.org/pdf/1511.06434.pdf
 beta1 : 0.9
 beta2 : 0.999
 
