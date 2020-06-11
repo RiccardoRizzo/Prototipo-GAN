@@ -32,7 +32,7 @@ import shutil
 
 sys.path.append("./Modelli")
 
-import GenDis_spectral as gd2
+import GenDis_SA as gd2
 
 # Adam parameters
 #=================
