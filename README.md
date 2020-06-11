@@ -9,18 +9,19 @@ train_DCGAN.py
   e' il programma la lanciare con argomento un file di parametri ( per esempio train_DCGAN.py parametri_BASE.yaml)
 
 Modelli
-  Contiene le reti; i file sono:
-    Layers.py : 
-      il codice dei vari strati di G e D
-    GenDis***.py :
+
+  * Contiene le reti; i file sono:
+      * Layers.py : 
+        il codice dei vari strati di G e D
+      * GenDis***.py :
       le reti Generatore e Discriminatore costruite usando gli strati e altri moduli
-    spectral.py :
+      * spectral.py :
       codice della norma spettrale
 
 
 Il file dei parametri non necessita di settare il numero di strati k
 Il file parametri_BASE.yaml e' quello da clonare e modificare per gli esperimenti.
-Tutti i commenti e le modifiche sostanziali vanno fatte prima in questo file, in modo da renderle permanenti. 
+Tutti i commenti e le modifiche sostanziali vanno fatte prima in questo file, in modcontiene o da renderle permanenti. 
 
 Viene creata una directory con dettagli e risultati del run
 I risultati sono variabili, e' necessario fare altri esperimenti.
