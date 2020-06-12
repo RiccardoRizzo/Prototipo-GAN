@@ -34,11 +34,6 @@ sys.path.append("./Modelli")
 
 import GenDis_SA as gd2
 
-##################################################
-## LA SHORT GAN SERVE AD AVERE MENO STRATI ED UNA 
-## MAGGIORE RISOLUZIONE
-## DELLE IMMAGINI
-##################################################
 
 
 
@@ -100,7 +95,7 @@ def main(pl, paramFile):
     ngf = pl["ngf"]
     # Size of feature maps in discriminator
     ndf = pl["ndf"]
-    # numeber of layers
+    # number of layers
     k = int(math.log(image_size, 2)) - 3
     # k = pl["k"]
 

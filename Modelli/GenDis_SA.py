@@ -13,7 +13,9 @@ import torch
 
 #===============================================================================
 
-
+kernel_size = 4
+stride = 2
+padding =1
 
 
 
@@ -25,7 +27,7 @@ class Discriminator(nn.Module):
 
         layers = []
 
-        layers.append(nn.Conv2d(nc, ndf, 4, stride=2, padding=1, bias=False) )
+        layers.append(nn.Conv2d(nc, ndf, kerne_size, stride=stride, padding=padding, bias=False) )
         layers.append(nn.LeakyReLU(0.2, inplace=True))
         # state size. (ndf) x 64 x 64
 
@@ -38,7 +40,7 @@ class Discriminator(nn.Module):
 
         layers.append(sa.Self_Attn(ndf*d_out, "relu"))
         
-        layers.append(nn.Conv2d(ndf * d_out, 1, 4, stride=1, padding=0, bias=False))
+        layers.append(nn.Conv2d(ndf * d_out, 1, kernel_size, stride=1, padding=0, bias=False))
         layers.append(nn.Sigmoid())
         # state size. 1
         
@@ -67,7 +69,7 @@ class Generator(nn.Module):
 
  
         d_in = 2**k
-        layers.append( nn.ConvTranspose2d( nz, ngf * d_in, 4, 1, 0, bias=False) )
+        layers.append( nn.ConvTranspose2d( nz, ngf * d_in, Kernel_size, 1, 0, bias=False) )
         layers.append( nn.BatchNorm2d(ngf * d_in) )
         layers.append( nn.ReLU(True) )
         # state size. (ngf*16) x 4 x 4
@@ -80,7 +82,7 @@ class Generator(nn.Module):
 
         layers.append(sa.Self_Attn(ngf,"relu"))    
         
-        layers.append(nn.ConvTranspose2d(    ngf,      nc, 4, 2, 1, bias=False) )
+        layers.append(nn.ConvTranspose2d(    ngf,      nc, kernel_size, stride, padding, bias=False) )
         layers.append(nn.Tanh() )
             # state size. (nc) x 128 x 128
  
