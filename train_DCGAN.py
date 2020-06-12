@@ -35,7 +35,7 @@ sys.path.append("./Modelli")
 import GenDis_SA as gd2
 
 ##################################################
-## LA SLIM GAN SERVE AD AVERE MENO STRATI ED UNA MAGGIORE RISOLUZIONE
+## LA SHORT GAN SERVE AD AVERE MENO STRATI ED UNA MAGGIORE RISOLUZIONE
 ## DELLE IMMAGINI
 ##################################################
 
