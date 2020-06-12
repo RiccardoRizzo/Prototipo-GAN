@@ -27,7 +27,7 @@ class Discriminator(nn.Module):
 
         layers = []
 
-        layers.append(nn.Conv2d(nc, ndf, kerne_size, stride=stride, padding=padding, bias=False) )
+        layers.append(nn.Conv2d(nc, ndf, kernel_size, stride=stride, padding=padding, bias=False) )
         layers.append(nn.LeakyReLU(0.2, inplace=True))
         # state size. (ndf) x 64 x 64
 
@@ -69,7 +69,7 @@ class Generator(nn.Module):
 
  
         d_in = 2**k
-        layers.append( nn.ConvTranspose2d( nz, ngf * d_in, Kernel_size, 1, 0, bias=False) )
+        layers.append( nn.ConvTranspose2d( nz, ngf * d_in, kernel_size, 1, 0, bias=False) )
         layers.append( nn.BatchNorm2d(ngf * d_in) )
         layers.append( nn.ReLU(True) )
         # state size. (ngf*16) x 4 x 4
