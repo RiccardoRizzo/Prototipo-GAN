@@ -79,6 +79,18 @@ def saveFakeImages(fake, nomefile):
 
 
 
+def salvaProvino(nomeDir, nomeFile, netG, netD, fixed_noise):
+    with torch.no_grad():
+        fake = netG(fixed_noise).detach().cpu()
+
+    nomeFileImage = os.path.join(nomeDir, nomeFile +".jpg")
+    saveFakeImages(fake, nomeFileImage)
+
+    torch.save(netD, os.path.join(nomeDir, nomeFile +"__D.pth" ) )
+    torch.save(netG, os.path.join(nomeDir, nomeFile +"__G.pth" ) )
+    print("salvato il modello in ", nomeFile)
+
+
 def main(pl, paramFile):
 
     # Set random seed for reproducibility
@@ -141,7 +153,7 @@ def main(pl, paramFile):
         netG = nn.DataParallel(netG, list(range(pl["ngpu"])), k)
 
     # Apply the weights_init function to randomly initialize all weights
-    #  to mean=0, stdev=0.2.
+    # to mean=0, stdev=0.2.
     netG.apply(gd2.weights_init)
 
     #--------------------------------------
@@ -153,7 +165,7 @@ def main(pl, paramFile):
         netD = nn.DataParallel(netD, list(range(pl["ngpu"])))
 
     # Apply the weights_init function to randomly initialize all weights
-    #  to mean=0, stdev=0.2.
+    # to mean=0, stdev=0.2.
     netD.apply(gd2.weights_init)
 
     # Print the model ==================================
@@ -189,7 +201,6 @@ def main(pl, paramFile):
     # For each epoch
     for epoch in range(pl["num_epochs"]):
         # For each batch in the dataloader
-        #for i, data in enumerate(debug_dataloader, 0):
         for i, data in enumerate(dataloader, 0):
         
             ############################
@@ -204,7 +215,6 @@ def main(pl, paramFile):
 
             label = torch.full((b_size,), real_label, device=device)
             # Forward pass real batch through D
-            #print(real_cpu.size())
             output = netD(real_cpu).view(-1)
 
             errD_real = criterion(output, label)
@@ -245,6 +255,7 @@ def main(pl, paramFile):
             # Update G
             optimizerG.step()
 
+
             # Output training stats
             if i % 50 == 0:
                 print('[%d/%d][%d/%d]\tLoss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f'
@@ -259,27 +270,19 @@ def main(pl, paramFile):
             G_losses.append(errG.item())
             D_losses.append(errD.item())
         
+
+
+
         # salva ad ogni epoca un provino delle immagini generate
         # ed i modelli relativi
-        with torch.no_grad():
-            fake = netG(fixed_noise).detach().cpu()
-
         nomeFile = pl["nomeModello"]+ "_" +str(epoch)
-        nomeFileImage = os.path.join(nomeDir, nomeFile +".jpg")
-        saveFakeImages(fake, nomeFileImage)
-        
-
-        torch.save(netD, os.path.join(nomeDir, nomeFile +"__D.pth" ) )
-        torch.save(netG, os.path.join(nomeDir, nomeFile +"__G.pth" ) )
-        print("salvato il modello in ", nomeFile)
+        salvaProvino(nomeDir, nomeFile, netG, netD, fixed_noise)
 
     #=======================================
     # Salvataggio di fine training
-    nomeFile = os.path.join(nomeDir, pl["nomeModello"] +"_FINALE__D.pth")
-    torch.save(netD, nomeFile )
-    nomeFile = os.path.join(nomeDir, pl["nomeModello"] +"_FINALE__G.pth")
-    torch.save(netG, nomeFile )
-    print("salvato il modello in ", nomeDir)
+    nomeFile = pl["nomeModello"]+ "_"+"FINALE"
+    salvaProvino(nomeDir, nomeFile, netG, netD, fixed_noise)
+
 
 
     nomeFile = os.path.join(nomeDir, pl["nomeModello"] + "_"+pl["nomeFileLosses"][0])
