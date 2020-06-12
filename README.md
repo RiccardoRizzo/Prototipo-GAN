@@ -1,5 +1,7 @@
 # DCGAN :: modello a risoluzione maggiore
 
+## 12 giugno 2020
+
 ## 11 giugno 2020
 Usata spectral norm gia' presente in pytorch
 
