@@ -21,16 +21,16 @@ def findLossFiles(dirModello):
 
 def plot(dirModello):
     nomeFileLosses = findLossFiles(dirModello)
-    print(nomeFileLosses)
+    #print(nomeFileLosses)
 
     nomeFile = os.path.join(dirModello, nomeFileLosses[0])
-    print(nomeFile)
+    #print(nomeFile)
     with open(nomeFile, 'r') as f:
         reader = csv.reader(f)
         G_losses = list(reader)
         
     nomeFile = os.path.join(dirModello, nomeFileLosses[1])
-    print(nomeFile)
+    #print(nomeFile)
     with open(nomeFile, 'r') as f:
         reader = csv.reader(f)
         D_losses = list(reader)
