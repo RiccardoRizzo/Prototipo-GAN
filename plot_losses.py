@@ -15,6 +15,7 @@ def findLossFiles(dirModello):
     for file in glob.glob(suffix):
         listaFile.append(file)
     os.chdir("..")
+    print("trovati i file: " + " ".join(listaFile))
     return listaFile
 
 
@@ -22,13 +23,13 @@ def plot(dirModello):
     nomeFileLosses = findLossFiles(dirModello)
     print(nomeFileLosses)
 
-    nomeFile = os.path.join("./"+dirModello, nomeFileLosses[0])
+    nomeFile = os.path.join(dirModello, nomeFileLosses[0])
     print(nomeFile)
     with open(nomeFile, 'r') as f:
         reader = csv.reader(f)
         G_losses = list(reader)
         
-    nomeFile = os.path.join("./"+dirModello, nomeFileLosses[1])
+    nomeFile = os.path.join(dirModello, nomeFileLosses[1])
     print(nomeFile)
     with open(nomeFile, 'r') as f:
         reader = csv.reader(f)
