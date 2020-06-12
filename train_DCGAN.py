@@ -34,6 +34,13 @@ sys.path.append("./Modelli")
 
 import GenDis_SA as gd2
 
+##################################################
+## LA SLIM GAN SERVE AD AVERE MENO STRATI ED UNA MAGGIORE RISOLUZIONE
+## DELLE IMMAGINI
+##################################################
+
+
+
 # Adam parameters
 #=================
 # alpha. Also referred to as the learning rate or step size. 
