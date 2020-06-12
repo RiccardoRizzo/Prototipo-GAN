@@ -23,6 +23,7 @@ padding = 1
     # H_out = H_in * stride
     # W_out = W_out * stride
 
+
 def DisLayerSN_d(ndf, k):
     """
     Layer che usa la spectral norm
