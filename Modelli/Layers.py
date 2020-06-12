@@ -9,7 +9,9 @@ import torch.nn as nn
 #       }
 
 #===============================================================================
-
+kernel_size = 4
+stride = 2
+padding = 1
 
 
 
@@ -20,7 +22,8 @@ def DisLayerSN_d(ndf, k):
     d_in = 2**k 
     d_out = 2**(k+1)
 
-    out = nn.Sequential(nn.utils.spectral_norm(nn.Conv2d(ndf*d_in, ndf*d_out, 4, stride=2, padding=1, bias=False)),                        
+    out = nn.Sequential(nn.utils.spectral_norm(
+                        nn.Conv2d(ndf*d_in, ndf*d_out, kernel_size, stride=stride, padding=padding, bias=False)),                        
                         nn.Dropout2d(),
                         nn.BatchNorm2d(ndf * d_out), 
                         nn.LeakyReLU(0.2, inplace=True) )
@@ -40,7 +43,8 @@ def DisLayerSN(ndf, k):
     d_in = 2**k 
     d_out = 2**(k+1)
 
-    out = nn.Sequential(nn.utils.spectral_norm(nn.Conv2d(ndf*d_in, ndf*d_out, 4, stride=2, padding=1, bias=False)),                        
+    out = nn.Sequential(nn.utils.spectral_norm(
+                        nn.Conv2d(ndf*d_in, ndf*d_out, kernel_size, stride=stride, padding=padding, bias=False)),                        
                         nn.BatchNorm2d(ndf * d_out), 
                         nn.LeakyReLU(0.2, inplace=True) )
     # RIGUARDO LE DIMENSIONI
@@ -55,7 +59,7 @@ def DisLayer(ndf, k):
     d_in = 2**k 
     d_out = 2**(k+1)
 
-    out = nn.Sequential(nn.Conv2d(ndf*d_in, ndf*d_out, 4, stride=2, padding=1, bias=False), 
+    out = nn.Sequential(nn.Conv2d(ndf*d_in, ndf*d_out, kernel_size, stride=stride, padding=padding, bias=False), 
                         nn.BatchNorm2d(ndf * d_out), 
                         nn.LeakyReLU(0.2, inplace=True) )
     # in nn.Conv2d(ndf * d_in, ndf * d_out, 4, 2, 1, bias=False)
@@ -73,7 +77,8 @@ def GenLayerSN(ngf, k):
     """
     d_in = 2**k 
     d_out = 2**(k-1)
-    out = nn.Sequential( nn.utils.spectral_norm(nn.ConvTranspose2d(ngf * d_in, ngf * d_out, 4, 2, 1, bias=False)),
+    out = nn.Sequential( nn.utils.spectral_norm(
+                         nn.ConvTranspose2d(ngf * d_in, ngf * d_out, kernel_size, stride, padding, bias=False)),
                          nn.BatchNorm2d(ngf * d_out),
                          nn.ReLU(True) )
     # in nn.ConvTranspose2d(ngf * d_in, ngf * d_out, 4, 2, 1, bias=False)
@@ -86,7 +91,7 @@ def GenLayerSN(ngf, k):
 def GenLayer(ngf, k):
     d_in = 2**k 
     d_out = 2**(k-1)
-    out = nn.Sequential( nn.ConvTranspose2d(ngf * d_in, ngf * d_out, 4, 2, 1, bias=False),
+    out = nn.Sequential( nn.ConvTranspose2d(ngf * d_in, ngf * d_out, kernel_size, stride, padding, bias=False),
                          nn.BatchNorm2d(ngf * d_out),
                          nn.ReLU(True) )
     # in nn.ConvTranspose2d(ngf * d_in, ngf * d_out, 4, 2, 1, bias=False)
