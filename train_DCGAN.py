@@ -54,14 +54,14 @@ import GenDis_SA as gd2
 # epsilon. Is a very small number to prevent any division by 
 #          zero in the implementation (e.g. 10E-8).
 
-
+#-------------------------------------------------
 def salvaCSV(lista, nomefile):
 # salva le liste come file csv
     with open(nomefile, 'w', newline='') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
         wr.writerow(lista)
 
-
+#-------------------------------------------------
 def saveFakeImages(fake, nomefile):
     temp = vutils.make_grid(fake, padding=2, normalize=True)
     img2 = temp.numpy().transpose(1,2,0)
@@ -78,7 +78,7 @@ def saveFakeImages(fake, nomefile):
     img2.save(nomefile)
 
 
-
+#---------------------------------------------------
 def salvaProvino(nomeDir, nomeFile, netG, netD, fixed_noise):
     with torch.no_grad():
         fake = netG(fixed_noise).detach().cpu()
@@ -91,7 +91,7 @@ def salvaProvino(nomeDir, nomeFile, netG, netD, fixed_noise):
     print("salvato il modello in ", nomeFile)
 
 
-
+#---------------------------------------------------------
 def stringaStato(epoch, num_epochs, i, dataloader, errD, errG, D_x, D_G_z1, D_G_z2):
     out = ('[%d/%d][%d/%d]\tLoss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f'
                     % (epoch, num_epochs, 
@@ -103,7 +103,7 @@ def stringaStato(epoch, num_epochs, i, dataloader, errD, errG, D_x, D_G_z1, D_G_
           )
     return out
 
-
+#---------------------------------------------------------
 def creaDeG(ngpu, nz, ngf, ndf, nc, k, device):
     #======================================
     # Create the generator
@@ -131,7 +131,7 @@ def creaDeG(ngpu, nz, ngf, ndf, nc, k, device):
 
     return netD, netG
 
-
+##======================================================
 def main(pl, paramFile):
 
     # Set random seed for reproducibility
@@ -187,7 +187,7 @@ def main(pl, paramFile):
 
     # crea le reti D e G 
     netD, netG = creaDeG(pl["ngpu"], pl["nz"], ngf, ndf, pl["nc"], k, device)
-    
+
     # Print the model ==================================
     nomeFile = os.path.join(nomeDir, pl["nomeModello"]+"_architettura.txt")
     stringa = str(netD) +"\n\n"+ str(netG) 
