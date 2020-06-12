@@ -12,7 +12,7 @@ import torch.nn as nn
 kernel_size = 4
 stride = 2
 padding = 1
-    # RIGUARDO LE DIMENSIONI
+    # RIGUARDO LE DIMENSIONI ----------------------------------------------------
     # In nn.Conv2d(ndf * d_in, ndf * d_out, 4, 2, 1, bias=False)
     # kernel_size = 4, stride = 2, padding = 1
     # se kernel size = stride + 2* padding (come e') allora la dimensione di uscita della immagine e'
