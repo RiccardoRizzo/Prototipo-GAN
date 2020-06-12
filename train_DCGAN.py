@@ -91,6 +91,20 @@ def salvaProvino(nomeDir, nomeFile, netG, netD, fixed_noise):
     print("salvato il modello in ", nomeFile)
 
 
+
+def stringaStato(epoch, num_epochs, i, dataloader, errD, errG, D_x, D_G_z1, D_G_z2):
+    out = ('[%d/%d][%d/%d]\tLoss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f'
+                    % (epoch, num_epochs, 
+                        i, len(dataloader),
+                        # Loss_D    Loss_G
+                        errD.item(), errG.item(), 
+                        #D(x)   D(G(z))
+                        D_x,    D_G_z1, D_G_z2)
+          )
+    return out
+
+
+
 def main(pl, paramFile):
 
     # Set random seed for reproducibility
@@ -258,21 +272,14 @@ def main(pl, paramFile):
 
             # Output training stats
             if i % 50 == 0:
-                print('[%d/%d][%d/%d]\tLoss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f'
-                    % (epoch, pl["num_epochs"], 
-                        i, len(dataloader),
-                        # Loss_D    Loss_G
-                        errD.item(), errG.item(), 
-                        #D(x)   D(G(z))
-                        D_x,    D_G_z1, D_G_z2))
+                ss = stringaStato(epoch, pl["num_epochs"], i, dataloader, errD, errG, D_x, D_G_z1, D_G_z2 )
+                print(ss)
+
 
             # Save Losses for plotting later
             G_losses.append(errG.item())
             D_losses.append(errD.item())
         
-
-
-
         # salva ad ogni epoca un provino delle immagini generate
         # ed i modelli relativi
         nomeFile = pl["nomeModello"]+ "_" +str(epoch)
@@ -284,7 +291,6 @@ def main(pl, paramFile):
     salvaProvino(nomeDir, nomeFile, netG, netD, fixed_noise)
 
 
-
     nomeFile = os.path.join(nomeDir, pl["nomeModello"] + "_"+pl["nomeFileLosses"][0])
     salvaCSV(G_losses, nomeFile)
     nomeFile = os.path.join(nomeDir, pl["nomeModello"] + "_"+pl["nomeFileLosses"][1])
@@ -293,7 +299,8 @@ def main(pl, paramFile):
 
 
 
-
+##=====================================================
+##=====================================================
 if __name__ == "__main__":
     inputFile = sys.argv[1]
 
