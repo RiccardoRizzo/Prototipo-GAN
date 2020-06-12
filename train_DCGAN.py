@@ -104,6 +104,33 @@ def stringaStato(epoch, num_epochs, i, dataloader, errD, errG, D_x, D_G_z1, D_G_
     return out
 
 
+def creaDeG(ngpu, nz, ngf, ndf, nc, k, device):
+    #======================================
+    # Create the generator
+    netG = gd2.Generator(ngpu, nz, ngf, nc, k).to(device)
+
+    # Handle multi-gpu if desired
+    if (device.type == 'cuda') and (ngpu > 1):
+        netG = nn.DataParallel(netG, list(range(ngpu)), k)
+
+    # Apply the weights_init function to randomly initialize all weights
+    # to mean=0, stdev=0.2.
+    netG.apply(gd2.weights_init)
+
+    #--------------------------------------
+    # Create the Discriminator
+    netD = gd2.Discriminator(ngpu, ndf, nc, k).to(device)
+
+    # Handle multi-gpu if desired
+    if (device.type == 'cuda') and (ngpu > 1):
+        netD = nn.DataParallel(netD, list(range(ngpu)))
+
+    # Apply the weights_init function to randomly initialize all weights
+    # to mean=0, stdev=0.2.
+    netD.apply(gd2.weights_init)
+
+    return netD, netG
+
 
 def main(pl, paramFile):
 
@@ -158,30 +185,9 @@ def main(pl, paramFile):
     # Decide which device we want to run on
     device = torch.device("cuda:0" if (torch.cuda.is_available() and pl["ngpu"] > 0) else "cpu")
 
-    #======================================
-    # Create the generator
-    netG = gd2.Generator(pl["ngpu"], pl["nz"], ngf, pl["nc"], k).to(device)
-
-    # Handle multi-gpu if desired
-    if (device.type == 'cuda') and (pl["ngpu"] > 1):
-        netG = nn.DataParallel(netG, list(range(pl["ngpu"])), k)
-
-    # Apply the weights_init function to randomly initialize all weights
-    # to mean=0, stdev=0.2.
-    netG.apply(gd2.weights_init)
-
-    #--------------------------------------
-    # Create the Discriminator
-    netD = gd2.Discriminator(pl["ngpu"], ndf, pl["nc"], k).to(device)
-
-    # Handle multi-gpu if desired
-    if (device.type == 'cuda') and (pl["ngpu"] > 1):
-        netD = nn.DataParallel(netD, list(range(pl["ngpu"])))
-
-    # Apply the weights_init function to randomly initialize all weights
-    # to mean=0, stdev=0.2.
-    netD.apply(gd2.weights_init)
-
+    # crea le reti D e G 
+    netD, netG = creaDeG(pl["ngpu"], pl["nz"], ngf, ndf, pl["nc"], k, device)
+    
     # Print the model ==================================
     nomeFile = os.path.join(nomeDir, pl["nomeModello"]+"_architettura.txt")
     stringa = str(netD) +"\n\n"+ str(netG) 
@@ -194,8 +200,7 @@ def main(pl, paramFile):
     criterion = nn.BCELoss()
 
     # Create batch of latent vectors that we will use to visualize
-    #  the progression of the generator
-    #fixed_noise = torch.randn(64, pl["nz"], 1, 1, device=device)
+    # the progression of the generator
     fixed_noise = torch.randn(pl["batch_size"], pl["nz"], 1, 1, device=device)
 
     # Establish convention for real and fake labels during training
@@ -269,24 +274,21 @@ def main(pl, paramFile):
             # Update G
             optimizerG.step()
 
-
             # Output training stats
             if i % 50 == 0:
                 ss = stringaStato(epoch, pl["num_epochs"], i, dataloader, errD, errG, D_x, D_G_z1, D_G_z2 )
                 print(ss)
 
-
             # Save Losses for plotting later
             G_losses.append(errG.item())
             D_losses.append(errD.item())
-        
-        # salva ad ogni epoca un provino delle immagini generate
-        # ed i modelli relativi
+
+        # Fine dell'epoca --------------------------------------
+        # salva un provino delle immagini generate ed i modelli relativi
         nomeFile = pl["nomeModello"]+ "_" +str(epoch)
         salvaProvino(nomeDir, nomeFile, netG, netD, fixed_noise)
 
-    #=======================================
-    # Salvataggio di fine training
+    # Fine del training =======================================
     nomeFile = pl["nomeModello"]+ "_"+"FINALE"
     salvaProvino(nomeDir, nomeFile, netG, netD, fixed_noise)
 
