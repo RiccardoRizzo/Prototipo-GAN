@@ -153,7 +153,7 @@ def trainingStep(i,  data,
     errD_real = criterion(output, label)
     # Calculate gradients for D in backward pass
     errD_real.backward()
-    D_x = output.mean().item()
+    D_x = output.mean().item()      # valore in output per la statistica sull'apprendimento 
 
     ## Train with all-fake batch
     # Generate batch of latent vectors
@@ -167,9 +167,9 @@ def trainingStep(i,  data,
     errD_fake = criterion(output, label)
     # Calculate the gradients for this batch
     errD_fake.backward()
-    D_G_z1 = output.mean().item()
+    D_G_z1 = output.mean().item()   # valore in output per la statistica sull'apprendimento 
     # Add the gradients from the all-real and all-fake batches
-    errD = errD_real + errD_fake
+    errD = errD_real + errD_fake     # valore in output per la statistica sull'apprendimento 
     # Update D
     optimizerD.step()
 
@@ -181,10 +181,10 @@ def trainingStep(i,  data,
     # Since we just updated D, perform another forward pass of all-fake batch through D
     output = netD(fake).view(-1)
     # Calculate G's loss based on this output
-    errG = criterion(output, label)
+    errG = criterion(output, label)  # valore in output per la statistica sull'apprendimento 
     # Calculate gradients for G
     errG.backward()
-    D_G_z2 = output.mean().item()
+    D_G_z2 = output.mean().item()    # valore in output per la statistica sull'apprendimento 
     # Update G
     optimizerG.step()
 
@@ -281,13 +281,12 @@ def main(pl, paramFile):
     for epoch in range(pl["num_epochs"]):
         # For each batch in the dataloader
         for i, data in enumerate(dataloader, 0):
-
+            ## ADDESTRAMENTO DELLE RETI
             errD, errG, D_x, D_G_z1, D_G_z2 = trainingStep(i, data, 
                  real_label, fake_label, 
                  netD, netG, 
                  device, pl["nz"], optimizerD, optimizerG, criterion)
-
-            # Output training stats
+            ## Output training stats
             if i % 50 == 0:
                 ss = stringaStato(epoch, pl["num_epochs"], i, dataloader, errD, errG, D_x, D_G_z1, D_G_z2 )
                 print(ss)
