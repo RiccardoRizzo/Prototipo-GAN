@@ -192,7 +192,7 @@ def trainingStep(i,  data,
 
 
 
-def createDataloader(dataroot, n_samples, batch_size, workers):
+def createDataloader(image_size, dataroot, n_samples, batch_size, workers):
 
     # We can use an image folder dataset the way we have it setup.
     # Create the dataset
@@ -250,7 +250,7 @@ def main(pl, paramFile):
     newPath = shutil.copy(paramFile, nomeDir)
     #==============================================================================
 
-    dataloader = createDataloader(pl["dataroot"], pl"[n_samples"], pl["batch_size"], pl["workers"])
+    dataloader = createDataloader(image_size, pl["dataroot"], pl["n_samples"], pl["batch_size"], pl["workers"])
     """
     # We can use an image folder dataset the way we have it setup.
     # Create the dataset
