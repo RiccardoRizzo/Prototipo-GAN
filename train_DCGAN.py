@@ -190,7 +190,9 @@ def trainingStep(i,  data,
 
     return errD, errG, D_x, D_G_z1, D_G_z2
 
-
+##======================================================
+##======================================================
+##======================================================
 ##======================================================
 def main(pl, paramFile):
 
@@ -285,10 +287,13 @@ def main(pl, paramFile):
             errD, errG, D_x, D_G_z1, D_G_z2 = trainingStep(i, data, 
                  real_label, fake_label, 
                  netD, netG, 
-                 device, pl["nz"], optimizerD, optimizerG, criterion)
+                 device, pl["nz"], 
+                 optimizerD, optimizerG, 
+                 criterion)
             ## Output training stats
             if i % 50 == 0:
-                ss = stringaStato(epoch, pl["num_epochs"], i, dataloader, errD, errG, D_x, D_G_z1, D_G_z2 )
+                ss = stringaStato(epoch, pl["num_epochs"], i, 
+                                  dataloader, errD, errG, D_x, D_G_z1, D_G_z2 )
                 print(ss)
 
             # Save Losses for plotting later
@@ -313,8 +318,10 @@ def main(pl, paramFile):
 
 
 
-##=====================================================
-##=====================================================
+##======================================================
+##======================================================
+##======================================================
+##======================================================
 if __name__ == "__main__":
     inputFile = sys.argv[1]
 
