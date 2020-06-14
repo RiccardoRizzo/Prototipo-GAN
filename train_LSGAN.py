@@ -176,10 +176,10 @@ def trainingStep(i,  data,
     D_fake = netD(G_sample).view(-1)
 
     G_loss = 0.5 * torch.mean((D_fake -1)**2 )
-
+    
     G_loss.backward()
     optimizerG.step()
-
+    
     return D_loss, G_loss
 
 
@@ -297,8 +297,8 @@ def main(pl, paramFile):
                 print(ss)
 
             # Save Losses for plotting later
-            G_losses.append(errG.item())
-            D_losses.append(errD.item())
+            G_losses.append(G_loss.item())
+            D_losses.append(D_loss.item())
 
         # Fine dell'epoca --------------------------------------
         # salva un provino delle immagini generate ed i modelli relativi
