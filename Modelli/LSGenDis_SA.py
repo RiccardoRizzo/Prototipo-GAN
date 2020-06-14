@@ -41,7 +41,7 @@ class Discriminator(nn.Module):
         layers.append(sa.Self_Attn(ndf*d_out, "relu"))
         
         layers.append(nn.Conv2d(ndf * d_out, 1, kernel_size, stride=1, padding=0, bias=False))
-        layers.append(nn.Sigmoid())
+        #layers.append(nn.Sigmoid())
         # state size. 1
         
         self.main = nn.ModuleList(layers)
