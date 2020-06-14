@@ -251,30 +251,7 @@ def main(pl, paramFile):
     #==============================================================================
 
     dataloader = createDataloader(image_size, pl["dataroot"], pl["n_samples"], pl["batch_size"], pl["workers"])
-    """
-    # We can use an image folder dataset the way we have it setup.
-    # Create the dataset
-    trasf = transforms.Compose([   transforms.Resize(image_size),
-                                transforms.CenterCrop(image_size),
-                                transforms.ToTensor(),
-                                transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-                            ])
-
-    full_dataset = dset.ImageFolder(root=pl["dataroot"], transform=trasf)
     
-    ############################################################################
-    ######## DEBUG DATALOADER ##################################################
-    if pl["n_samples"] > 0 :
-        sottoinsieme = list(range(0,pl["n_samples"]))
-        dataset = torch.utils.data.Subset(full_dataset, sottoinsieme)
-    else:
-        dataset = full_dataset
-
-    dataloader = torch.utils.data.DataLoader(dataset, batch_size=pl["batch_size"],  
-                 shuffle=True, num_workers=pl["workers"])
-    ############################################################################
-    """
-
     # Decide which device we want to run on
     device = torch.device("cuda:0" if (torch.cuda.is_available() and pl["ngpu"] > 0) else "cpu")
 
