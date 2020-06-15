@@ -1,5 +1,8 @@
 # DCGAN :: modello a risoluzione maggiore
 
+## 15 giugno 2020
+Aggiunta versione Least Square GAN
+
 ## 12 giugno 2020
 
 ## 11 giugno 2020
