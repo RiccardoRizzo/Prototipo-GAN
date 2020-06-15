@@ -33,7 +33,7 @@ ngf : 128
 ndf : 128
   
 # Number of training epochs
-num_epochs : 10
+num_epochs : 50
 
 # Learning rate for optimizers
 lrd : 0.0002
