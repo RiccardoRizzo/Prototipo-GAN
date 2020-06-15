@@ -2,7 +2,7 @@
 ###### FILE MODIFICATO PER LA MACCHINA DEEP
 #################################################################
 # nome del modello
-nomeModello : "Prova_SA"
+nomeModello : "Prova_SA_LS"
 
 #nomeFile per i grafici losses
 nomeFileLosses : ["G_losses.csv", "D_losses.csv"]
@@ -33,7 +33,7 @@ ngf : 128
 ndf : 128
   
 # Number of training epochs
-num_epochs : 5
+num_epochs : 10
 
 # Learning rate for optimizers
 lrd : 0.0002
