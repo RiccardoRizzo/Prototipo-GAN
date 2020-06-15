@@ -50,5 +50,10 @@ def plot(dirModello):
 
 
 if __name__ == "__main__":
-    dirModello = sys.argv[1]
-    plot(dirModello)
+
+    try:
+        dirModello = sys.argv[1]
+        plot(dirModello)
+    except:
+        print('manca la directory che contiene i file di nome *losses.csv')
+        sys.exit(1)  # abort
