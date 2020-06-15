@@ -34,7 +34,16 @@ sys.path.append("./Modelli")
 
 import LSGenDis_SA as gd2
 
-
+####################################################################################
+#       LEAST SQUARE GAN
+#       Come trovata in
+#       https://wiseodd.github.io/techblog/2017/03/02/least-squares-gan/
+#
+#       articolo di riferimento:
+#       https://arxiv.org/abs/1611.04076v2
+#       Mao, Xudong, et al. “Multi-class Generative Adversarial Networks 
+#       with the L2 Loss Function.” arXiv preprint arXiv:1611.04076 (2016).
+####################################################################################
 
 
 # Adam parameters
