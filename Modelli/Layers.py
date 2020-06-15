@@ -88,3 +88,13 @@ def GenLayer(ngf, k):
                          nn.BatchNorm2d(ngf * d_out),
                          nn.ReLU(True) )
     return out
+
+
+def GenLayerDropout(ngf, k):
+    d_in = 2**k 
+    d_out = 2**(k-1)
+    out = nn.Sequential( nn.ConvTranspose2d(ngf * d_in, ngf * d_out, kernel_size, stride, padding, bias=False),
+                         nn.Dropout2d(),
+                         nn.BatchNorm2d(ngf * d_out),
+                         nn.ReLU(True) )
+    return out

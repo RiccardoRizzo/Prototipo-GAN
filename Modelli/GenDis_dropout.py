@@ -63,7 +63,7 @@ class Generator(nn.Module):
         
         for i in range(k):
             n = k-i 
-            layers.append( ll.GenLayer(ngf, n) )
+            layers.append( ll.GenLayerDropout(ngf, n) )
 
             
         layers.append(nn.ConvTranspose2d(    ngf,      nc, 4, 2, 1, bias=False) )

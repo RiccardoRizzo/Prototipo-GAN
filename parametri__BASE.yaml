@@ -2,7 +2,7 @@
 ###### FILE MODIFICATO PER LA MACCHINA DEEP
 #################################################################
 # nome del modello
-nomeModello : "Prova_SA_LS"
+nomeModello : "Prova_GenDropout"
 
 #nomeFile per i grafici losses
 nomeFileLosses : ["G_losses.csv", "D_losses.csv"]
