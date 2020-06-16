@@ -1,4 +1,6 @@
 # DCGAN :: modello a risoluzione maggiore
+## 17 giugno 2020
+Avviato un esperimento con il dropout in G (oltre che in D)
 
 ## 15 giugno 2020
 Aggiunta versione Least Square GAN
