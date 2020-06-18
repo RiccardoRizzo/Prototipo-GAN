@@ -1,4 +1,7 @@
 # DCGAN :: modello a risoluzione maggiore
+## 18 giugno 2020
+
+
 ## 17 giugno 2020
 Avviato un esperimento con il dropout in G (oltre che in D)
 
