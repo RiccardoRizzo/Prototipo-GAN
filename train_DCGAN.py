@@ -268,6 +268,7 @@ def main(pl, paramFile):
     # crea le reti D e G ================================================
     if pl["generator_file"] is not None:
         # load the weights into generator
+        print("carico file" + pl["generator_file"] )
         gd2.Generator.load_state_dict(torch.load(pl["generator_file"]))
     else:
         netG = creaG(pl["ngpu"], pl["nz"], ngf, pl["nc"], k, device)
