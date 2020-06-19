@@ -268,13 +268,13 @@ def main(pl, paramFile):
     # crea le reti D e G ================================================
     if pl["generator_file"] is not None:
         # load the weights into generator
-        gd2.Generator.load_state_dict(th.load(pl["generator_file"]))
+        gd2.Generator.load_state_dict(torch.load(pl["generator_file"]))
     else:
         netG = creaG(pl["ngpu"], pl["nz"], ngf, pl["nc"], k, device)
 
     if pl["discriminator_file"] is not None:
         # load the weights into discriminator
-        gd2.Discriminator.load_state_dict(th.load(pl["discriminator_file"]))
+        gd2.Discriminator.load_state_dict(torch.load(pl["discriminator_file"]))
     else:
         netD = creaD(pl["ngpu"], ndf, pl["nc"], k, device)
     

@@ -2,7 +2,7 @@
 ###### FILE MODIFICATO PER LA MACCHINA DEEP
 #################################################################
 # pretrained weights file for generator (vuoto se NoneType)
-generator_file : 
+generator_file : "/home/riccardo/Desktop/GAN2020/Link to Esp_prototipoGAN/Prova_SA_2020_06_14_23_14/Prova_SA_0__G.pth"
 
 # saved state for generator optimizer (vuoto se NoneType)
 generator_optim_file : 
