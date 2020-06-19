@@ -104,9 +104,9 @@ def stringaStato(epoch, num_epochs, i, dataloader, errD, errG, D_x, D_G_z1, D_G_
     return out
 
 
-def creaG(ngpu, nz, ngf,  k, device):
+def creaG(ngpu, nz, ngf, nc, k, device):
     # Create the generator
-    netG = gd2.Generator(ngpu, nz, ngf,  k).to(device)
+    netG = gd2.Generator(ngpu, nz, ngf, nc, k).to(device)
 
     # Handle multi-gpu if desired
     if (device.type == 'cuda') and (ngpu > 1):
@@ -134,7 +134,7 @@ def creaD(ngpu, ndf, nc, k, device):
 #---------------------------------------------------------
 def creaDeG(ngpu, nz, ngf, ndf, nc, k, device):
     print("Nuovo file")
-    netG = creaG(ngpu, nz, ngf,     k, device)
+    netG = creaG(ngpu, nz, ngf, nc, k, device)
     netD = creaD(ngpu,     ndf, nc, k, device)
     return netD, netG
 
