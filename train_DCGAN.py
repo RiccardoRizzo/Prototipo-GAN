@@ -133,6 +133,7 @@ def creaD(ngpu, ndf, nc, k, device):
 
 #---------------------------------------------------------
 def creaDeG(ngpu, nz, ngf, ndf, nc, k, device):
+    print("Nuovo file")
     netG = creaG(ngpu, nz, ngf,     k, device)
     netD = creaD(ngpu,     ndf, nc, k, device)
     return netD, netG
