@@ -103,11 +103,10 @@ def stringaStato(epoch, num_epochs, i, dataloader, errD, errG, D_x, D_G_z1, D_G_
           )
     return out
 
-#---------------------------------------------------------
-def creaDeG(ngpu, nz, ngf, ndf, nc, k, device):
-    #======================================
+
+def creaG(ngpu, nz, ngf,  k, device):
     # Create the generator
-    netG = gd2.Generator(ngpu, nz, ngf, nc, k).to(device)
+    netG = gd2.Generator(ngpu, nz, ngf,  k).to(device)
 
     # Handle multi-gpu if desired
     if (device.type == 'cuda') and (ngpu > 1):
@@ -116,9 +115,11 @@ def creaDeG(ngpu, nz, ngf, ndf, nc, k, device):
     # Apply the weights_init function to randomly initialize all weights
     # to mean=0, stdev=0.2.
     netG.apply(gd2.weights_init)
+    return netG
 
-    #--------------------------------------
-    # Create the Discriminator
+
+def creaD(ngpu, ndf, nc, k, device):
+     # Create the Discriminator
     netD = gd2.Discriminator(ngpu, ndf, nc, k).to(device)
 
     # Handle multi-gpu if desired
@@ -127,8 +128,14 @@ def creaDeG(ngpu, nz, ngf, ndf, nc, k, device):
 
     # Apply the weights_init function to randomly initialize all weights
     # to mean=0, stdev=0.2.
-    netD.apply(gd2.weights_init)
+    netD.apply(gd2.weights_init)   
+    return netD
 
+
+#---------------------------------------------------------
+def creaDeG(ngpu, nz, ngf, ndf, nc, k, device):
+    netG = creaG(ngpu, nz, ngf,     k, device)
+    netD = creaD(ngpu,     ndf, nc, k, device)
     return netD, netG
 
 

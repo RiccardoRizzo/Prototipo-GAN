@@ -47,7 +47,7 @@ class Discriminator(nn.Module):
 #===============================================================================
 
 class Generator(nn.Module):
-    def __init__(self, ngpu, nz, ngf, nc, k):
+    def __init__(self, ngpu, nz, ngf,  k):
         super(Generator, self).__init__()
         self.ngpu = ngpu
 
