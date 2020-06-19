@@ -265,8 +265,19 @@ def main(pl, paramFile):
     # Decide which device we want to run on
     device = torch.device("cuda:0" if (torch.cuda.is_available() and pl["ngpu"] > 0) else "cpu")
 
-    # crea le reti D e G 
-    netD, netG = creaDeG(pl["ngpu"], pl["nz"], ngf, ndf, pl["nc"], k, device)
+    # crea le reti D e G ================================================
+    if pl["generator_file"] is not None:
+        # load the weights into generator
+        msg_gan.gen.load_state_dict(th.load(args.generator_file))
+    else:
+        netG = creaG(pl["ngpu"], pl["nz"], ngf, pl["nc"], k, device)
+
+    if pl["discriminator_file"] is not None:
+        # load the weights into discriminator
+        msg_gan.dis.load_state_dict(th.load(args.discriminator_file))
+    else:
+        netD = creaD(pl["ngpu"], ndf, pl["nc"], k, device)
+    
 
     # Print the model ==================================
     nomeFile = os.path.join(nomeDir, pl["nomeModello"]+"_architettura.txt")

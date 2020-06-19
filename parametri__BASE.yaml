@@ -1,6 +1,18 @@
 #################################################################
 ###### FILE MODIFICATO PER LA MACCHINA DEEP
 #################################################################
+# pretrained weights file for generator (vuoto se NoneType)
+generator_file : 
+
+# saved state for generator optimizer (vuoto se NoneType)
+generator_optim_file : 
+                        
+# pretrained_weights file for discriminator (vuoto se NoneType)
+discriminator_file : 
+                        
+# saved state for discriminator optimizer (vuoto se NoneType)
+discriminator_optim_file :
+
 # nome del modello
 nomeModello : "Prova_GenDropout"
 
