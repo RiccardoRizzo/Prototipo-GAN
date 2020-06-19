@@ -131,12 +131,14 @@ def creaD(ngpu, ndf, nc, k, device):
     netD.apply(gd2.weights_init)   
     return netD
 
-
 #---------------------------------------------------------
 def creaDeG(ngpu, nz, ngf, ndf, nc, k, device):
     netG = creaG(ngpu, nz, ngf,     k, device)
     netD = creaD(ngpu,     ndf, nc, k, device)
     return netD, netG
+
+
+
 
 
 def trainingStep(i,  data, 
