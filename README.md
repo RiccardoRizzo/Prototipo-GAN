@@ -1,4 +1,8 @@
 # DCGAN :: modello a risoluzione maggiore
+## 22 giugno 2020
+Aggiunto salvataggio della rete e dell'ottimizzatore.
+Tutorial in https://pytorch.org/tutorials/beginner/saving_loading_models.html#saving-loading-a-general-checkpoint-for-inference-and-or-resuming-training
+
 ## 19 giugno 2020
 Creo una classe GAN per Genratore e Discriminatore
 
