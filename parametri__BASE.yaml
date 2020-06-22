@@ -2,12 +2,12 @@
 ###### FILE MODIFICATO PER LA MACCHINA DEEP
 #################################################################
 # pretrained weights file for generator (vuoto se NoneType)
-netD_checkpoint : "/home/riccardo/Focus/22==Esperimenti/Anno2020/Esp_prototipoGAN/Prova_GenDropout_2020_06_22_10_15/Prova_GenDropout_1__D.pth"
+netD_checkpoint : /home/riccardo/Focus/22==Esperimenti/Anno2020/Esp_prototipoGAN/Prova_Deep_2020_06_22_12_30/Prova_Deep_2__D.pth
 
-netG_checkpoint : "/home/riccardo/Focus/22==Esperimenti/Anno2020/Esp_prototipoGAN/Prova_GenDropout_2020_06_22_10_15/Prova_GenDropout_1__G.pth"
+netG_checkpoint : /home/riccardo/Focus/22==Esperimenti/Anno2020/Esp_prototipoGAN/Prova_Deep_2020_06_22_12_30/Prova_Deep_2__G.pth
 
 # nome del modello
-nomeModello : "Prova_Resume"
+nomeModello : "Prova_Ricomincio"
 
 #nomeFile per i grafici losses
 nomeFileLosses : ["G_losses.csv", "D_losses.csv"]

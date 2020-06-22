@@ -96,6 +96,7 @@ def salvaCheckpoint(nomeDir, nomeFile, netD, netG, optimizerD, optimizerG, fixed
     torch.save({
             'model_state_dict': netG.state_dict(),
             'optimizer_state_dict': optimizerG.state_dict(),
+            'fixed_noise' : fixed_noise,
             }, nomeCheckpoint)
     print("salvato il modello in ", nomeFile)
 
@@ -246,9 +247,9 @@ def main(pl, paramFile):
     # Set random seed for reproducibility
     manualSeed = 999
     #manualSeed = random.randint(1, 10000) # use if you want new results
-    print("Random Seed: ", manualSeed)
-    random.seed(manualSeed)
-    torch.manual_seed(manualSeed)
+    #print("Random Seed: ", manualSeed)
+    #random.seed(manualSeed)
+    #torch.manual_seed(manualSeed)
 
     # Spatial size of training images. All images will be resized to this
     # size using a transformer.
@@ -284,12 +285,15 @@ def main(pl, paramFile):
 
     netG = creaG(pl["ngpu"], pl["nz"], ngf, pl["nc"], k, device)
     optimizerG = optim.Adam(netG.parameters(), lr=pl["lrd"], betas=(pl["beta1"], pl["beta2"]))
+    # Create batch of latent vectors that we will use to visualize
+    # the progression of the generator
+    fixed_noise = torch.randn(pl["batch_size"], pl["nz"], 1, 1, device=device)
 
     if pl["netG_checkpoint"] is not None:
         checkpoint = torch.load(pl["netG_checkpoint"])
         netG.load_state_dict(checkpoint['model_state_dict'])
         optimizerG.load_state_dict(checkpoint['optimizer_state_dict'])
-
+        fixed_noise = checkpoint['fixed_noise']
     
     # Print the model ==================================
     nomeFile = os.path.join(nomeDir, pl["nomeModello"]+"_architettura.txt")
@@ -302,9 +306,7 @@ def main(pl, paramFile):
     # Initialize BCELoss function
     criterion = nn.BCELoss()
 
-    # Create batch of latent vectors that we will use to visualize
-    # the progression of the generator
-    fixed_noise = torch.randn(pl["batch_size"], pl["nz"], 1, 1, device=device)
+
 
     # Establish convention for real and fake labels during training
     real_label = 1
