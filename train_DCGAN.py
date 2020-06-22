@@ -306,12 +306,9 @@ def main(pl, paramFile):
     # Initialize BCELoss function
     criterion = nn.BCELoss()
 
-
-
     # Establish convention for real and fake labels during training
     real_label = 1
     fake_label = 0
-
 
     # Lists to keep track of progress
     G_losses = []
