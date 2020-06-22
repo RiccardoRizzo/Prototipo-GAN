@@ -2,19 +2,12 @@
 ###### FILE MODIFICATO PER LA MACCHINA DEEP
 #################################################################
 # pretrained weights file for generator (vuoto se NoneType)
-generator_file : "/home/riccardo/Desktop/GAN2020/Link to Esp_prototipoGAN/Prova_SA_2020_06_14_23_14/Prova_SA_0__G.pth"
+netD_checkpoint : "/home/riccardo/Focus/22==Esperimenti/Anno2020/Esp_prototipoGAN/Prova_GenDropout_2020_06_22_10_15/Prova_GenDropout_1__D.pth"
 
-# saved state for generator optimizer (vuoto se NoneType)
-generator_optim_file : 
-                        
-# pretrained_weights file for discriminator (vuoto se NoneType)
-discriminator_file : 
-                        
-# saved state for discriminator optimizer (vuoto se NoneType)
-discriminator_optim_file :
+netG_checkpoint : "/home/riccardo/Focus/22==Esperimenti/Anno2020/Esp_prototipoGAN/Prova_GenDropout_2020_06_22_10_15/Prova_GenDropout_1__G.pth"
 
 # nome del modello
-nomeModello : "Prova_GenDropout"
+nomeModello : "Prova_Resume"
 
 #nomeFile per i grafici losses
 nomeFileLosses : ["G_losses.csv", "D_losses.csv"]

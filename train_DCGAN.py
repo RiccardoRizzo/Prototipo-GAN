@@ -79,15 +79,24 @@ def saveFakeImages(fake, nomefile):
 
 
 #---------------------------------------------------
-def salvaProvino(nomeDir, nomeFile, netG, netD, fixed_noise):
+def salvaCheckpoint(nomeDir, nomeFile, netD, netG, optimizerD, optimizerG, fixed_noise):
     with torch.no_grad():
         fake = netG(fixed_noise).detach().cpu()
 
     nomeFileImage = os.path.join(nomeDir, nomeFile +".jpg")
     saveFakeImages(fake, nomeFileImage)
 
-    torch.save(netD, os.path.join(nomeDir, nomeFile +"__D.pth" ) )
-    torch.save(netG, os.path.join(nomeDir, nomeFile +"__G.pth" ) )
+    nomeCheckpoint = os.path.join(nomeDir, nomeFile +"__D.pth" )
+    torch.save({
+            'model_state_dict': netD.state_dict(),
+            'optimizer_state_dict': optimizerD.state_dict(),
+            }, nomeCheckpoint)
+
+    nomeCheckpoint = os.path.join(nomeDir, nomeFile +"__G.pth" )
+    torch.save({
+            'model_state_dict': netG.state_dict(),
+            'optimizer_state_dict': optimizerG.state_dict(),
+            }, nomeCheckpoint)
     print("salvato il modello in ", nomeFile)
 
 
@@ -265,21 +274,23 @@ def main(pl, paramFile):
     # Decide which device we want to run on
     device = torch.device("cuda:0" if (torch.cuda.is_available() and pl["ngpu"] > 0) else "cpu")
 
-    # crea le reti D e G ================================================
-    if pl["generator_file"] is not None:
-        # load the weights into generator
-        print("carico file" + pl["generator_file"] )
-        gd2.Generator.load_state_dict(torch.load(pl["generator_file"]))
-    else:
-        netG = creaG(pl["ngpu"], pl["nz"], ngf, pl["nc"], k, device)
+    # crea le reti D e G e gli ottimizzatori================================================
+    netD = creaD(pl["ngpu"], ndf, pl["nc"], k, device)
+    optimizerD = optim.Adam(netD.parameters(), lr=pl["lrd"], betas=(pl["beta1"], pl["beta2"]))
+    if pl["netD_checkpoint"] is not None:
+        checkpoint = torch.load(pl["netD_checkpoint"])
+        netD.load_state_dict(checkpoint['model_state_dict'])
+        optimizerD.load_state_dict(checkpoint['optimizer_state_dict'])
 
-    if pl["discriminator_file"] is not None:
-        # load the weights into discriminator
-        gd2.Discriminator.load_state_dict(torch.load(pl["discriminator_file"]))
-    else:
-        netD = creaD(pl["ngpu"], ndf, pl["nc"], k, device)
+    netG = creaG(pl["ngpu"], pl["nz"], ngf, pl["nc"], k, device)
+    optimizerG = optim.Adam(netG.parameters(), lr=pl["lrd"], betas=(pl["beta1"], pl["beta2"]))
+
+    if pl["netG_checkpoint"] is not None:
+        checkpoint = torch.load(pl["netG_checkpoint"])
+        netG.load_state_dict(checkpoint['model_state_dict'])
+        optimizerG.load_state_dict(checkpoint['optimizer_state_dict'])
+
     
-
     # Print the model ==================================
     nomeFile = os.path.join(nomeDir, pl["nomeModello"]+"_architettura.txt")
     stringa = str(netD) +"\n\n"+ str(netG) 
@@ -299,14 +310,10 @@ def main(pl, paramFile):
     real_label = 1
     fake_label = 0
 
-    # Setup Adam optimizers for both G and D
-    optimizerD = optim.Adam(netD.parameters(), lr=pl["lrd"], betas=(pl["beta1"], pl["beta2"]))
-    optimizerG = optim.Adam(netG.parameters(), lr=pl["lrg"], betas=(pl["beta1"], pl["beta2"]))
 
     # Lists to keep track of progress
     G_losses = []
     D_losses = []
-
 
     print("Inizio apprendimento, tutti i dati saranno salvati in "+ nomeDir)
     # For each epoch
@@ -333,11 +340,11 @@ def main(pl, paramFile):
         # Fine dell'epoca --------------------------------------
         # salva un provino delle immagini generate ed i modelli relativi
         nomeFile = pl["nomeModello"]+ "_" +str(epoch)
-        salvaProvino(nomeDir, nomeFile, netG, netD, fixed_noise)
+        salvaCheckpoint(nomeDir, nomeFile, netD, netG, optimizerD, optimizerG, fixed_noise)
 
     # Fine del training =======================================
     nomeFile = pl["nomeModello"]+ "_"+"FINALE"
-    salvaProvino(nomeDir, nomeFile, netG, netD, fixed_noise)
+    salvaCheckpoint(nomeDir, nomeFile, netD, netG, optimizerD, optimizerG, fixed_noise)
 
 
     nomeFile = os.path.join(nomeDir, pl["nomeModello"] + "_"+pl["nomeFileLosses"][0])
