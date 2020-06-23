@@ -53,7 +53,6 @@ import ltr_DCGAN as tr
 
 # epsilon. Is a very small number to prevent any division by 
 #          zero in the implementation (e.g. 10E-8).
-
 #-------------------------------------------------
 
 #-------------------------------------------------
@@ -95,7 +94,7 @@ def salvaCheckpoint(nomeDir, nomeFile, netD, netG, optimizerD, optimizerG, fixed
             }, nomeCheckpoint)
     print("salvato il modello in ", nomeFile)
 
-
+#---------------------------------------------------
 def creaG(ngpu, nz, ngf, nc, k, device):
     # Create the generator
     netG = gd2.Generator(ngpu, nz, ngf, nc, k).to(device)
@@ -109,7 +108,7 @@ def creaG(ngpu, nz, ngf, nc, k, device):
     netG.apply(gd2.weights_init)
     return netG
 
-
+#---------------------------------------------------
 def creaD(ngpu, ndf, nc, k, device):
      # Create the Discriminator
     netD = gd2.Discriminator(ngpu, ndf, nc, k).to(device)
@@ -208,8 +207,7 @@ def main(pl, paramFile):
 
     netG = creaG(pl["ngpu"], pl["nz"], ngf, pl["nc"], k, device)
     optimizerG = optim.Adam(netG.parameters(), lr=pl["lrd"], betas=(pl["beta1"], pl["beta2"]))
-    # Create batch of latent vectors that we will use to visualize
-    # the progression of the generator
+    # Create batch of latent vectors that we will use to visualize the progression of the generator
     fixed_noise = torch.randn(pl["batch_size"], pl["nz"], 1, 1, device=device)
 
     if pl["netG_checkpoint"] is not None:
@@ -233,9 +231,6 @@ def main(pl, paramFile):
     real_label = 1
     fake_label = 0
 
-    # Lists to keep track of progress
-    G_losses = []
-    D_losses = []
 
     print("Inizio apprendimento, tutti i dati saranno salvati in "+ nomeDir)
     # For each epoch
