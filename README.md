@@ -1,4 +1,8 @@
 # DCGAN :: modello a risoluzione maggiore
+## 23 giugno 2020
+incapsulati trainingStep e accessori in un unico file di libreria.
+Il file ltr_**GAN.py diventa il file da cambiare quando occorre implementare un nuovo algoritmo di training. Il file va chiamato dentro train_GAN.py 
+
 ## 22 giugno 2020
 Aggiunto salvataggio della rete e dell'ottimizzatore.
 Tutorial in https://pytorch.org/tutorials/beginner/saving_loading_models.html#saving-loading-a-general-checkpoint-for-inference-and-or-resuming-training
