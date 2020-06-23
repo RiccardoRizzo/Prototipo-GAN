@@ -216,6 +216,7 @@ def main(pl, paramFile):
     stringa = str(netD) +"\n\n"+ str(netG) 
     with open(nomeFile, "w") as text_file:
         text_file.write(stringa)
+        text_file.write("Algoritmo apprendimento in " + tr.__file__)
     print(stringa)
     #===================================================
 
