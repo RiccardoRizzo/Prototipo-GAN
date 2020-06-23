@@ -33,8 +33,8 @@ import shutil
 sys.path.append("./Modelli")
 
 import GenDis_SA as gd2
-import ltr_DCGAN as tr
-
+#import ltr_DCGAN as tr
+import ltr_LSGAN as tr
 
 
 # Adam parameters
