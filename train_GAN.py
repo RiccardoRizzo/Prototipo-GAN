@@ -30,12 +30,15 @@ from datetime import datetime
 import os
 import shutil
 
+###=============================================
+###  DEFINIZIONE MODELLO GAN E ALGORITMO 
+###  DI TRAINING ===============================
 sys.path.append("./Modelli")
 
 import GenDis_SA as gd2
 #import ltr_DCGAN as tr
 import ltr_LSGAN as tr
-
+###=============================================
 
 # Adam parameters
 #=================
