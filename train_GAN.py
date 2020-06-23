@@ -131,11 +131,7 @@ def creaDeG(ngpu, nz, ngf, ndf, nc, k, device):
 
 
 
-
-
-
 def createDataloader(image_size, dataroot, n_samples, batch_size, workers):
-
     # We can use an image folder dataset the way we have it setup.
     # Create the dataset
     trasf = transforms.Compose([   transforms.Resize(image_size),
@@ -155,8 +151,7 @@ def createDataloader(image_size, dataroot, n_samples, batch_size, workers):
         dataset = full_dataset
 
     dataloader = torch.utils.data.DataLoader(dataset, batch_size=batch_size,  
-                 shuffle=True, num_workers=workers)
-  
+                 shuffle=True, num_workers=workers) 
     return dataloader
 
 
@@ -246,9 +241,11 @@ def main(pl, paramFile):
                  criterion)
             ## Output training stats
             if i % 50 == 0:
-                ss = tr.stringaStato(epoch, pl["num_epochs"], i, 
-                                  dataloader, datiTR )
-                print(ss)
+                # stringa relativa ad epoche e dati
+                oo = '[%d/%d][%d/%d]\t' % (epoch, pl["num_epochs"],  i, len(dataloader))
+                # stringa relativa allo stato dell'apprendimento
+                ss = tr.stringaStato( datiTR )
+                print(oo + ss)
 
             # Save Losses for plotting later
             tr.G_losses.append(datiTR[0].item())

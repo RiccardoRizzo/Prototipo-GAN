@@ -1,8 +1,13 @@
 import torch
 
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+import csv
+import sys
+import os
 
-G_losses = []
-D_losses = []
+import glob
 
 def trainingStep(i,  data, 
                  real_label, fake_label, 
@@ -69,20 +74,59 @@ def trainingStep(i,  data,
 
 
 #---------------------------------------------------------
-def stringaStato(epoch, num_epochs, i, dataloader, outTR):
-    out = ('[%d/%d][%d/%d]\tLoss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f'
-                    % (epoch, num_epochs, 
-                        i, len(dataloader),
-                        # Loss_D    Loss_G
-                        outTR[0].item(), outTR[1].item(), 
-                        #D(x)   D(G(z))
+def stringaStato(outTR):
+    """
+    Serve a stampare una stringa con il report relativo al passo di apprendimento
+    definito sopra
+    """
+    out = ('Loss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f' %
+                        # Loss_D        Loss_G
+                        (outTR[0].item(), outTR[1].item(), 
+                        #D(x)     D(G(z))
                         outTR[2], outTR[3], outTR[4])
-          )
+            )
     return out
 
 
+
+#####################################################
+"""
+Strutture per la memorizzazione dell'errore durante l'apprendimento
+"""
+G_losses = []
+D_losses = []
+#---------------------------------------------------
 def salvaCSV(lista, nomefile):
-# salva le liste come file csv
+    """
+    Salva una delle strutture di sopra in un file csv
+    """
     with open(nomefile, 'w', newline='') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
         wr.writerow(lista)
+#---------------------------------------------------
+def loadCSV(nomeFile):
+    """
+    Carica il file csv salvato dalla funzione sopra
+    """
+    with open(nomeFile, 'r') as f:
+        reader = csv.reader(f)
+        G_losses = list(reader)
+    loss = np.array([float(x) for x in  G_losses[0] ])
+    return loss
+#---------------------------------------------------
+def plot(nomeFileLosses):
+    """
+    Routine da modificare a seconda della funzione di training
+    """
+    G_losses = loadCSV(nomeFileLosses) 
+    D_losses = loadCSV(nomeFileLosses)
+
+    plt.figure(figsize=(10,5))
+    plt.title("Generator and Discriminator Loss During Training")
+    plt.plot(G_losses,label="G")
+    plt.plot(D_losses,label="D")
+    plt.xlabel("iterations")
+    plt.ylabel("Loss")
+    plt.legend()
+    plt.show()
+
