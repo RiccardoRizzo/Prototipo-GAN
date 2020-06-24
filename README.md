@@ -1,33 +1,72 @@
 # DCGAN :: modello a risoluzione maggiore
-## 23 giugno 2020
+## Uso del programma
+Nel programma train_GAN cambiare la parte
+```python
+###=============================================
+###  DEFINIZIONE MODELLO GAN E ALGORITMO 
+###  DI TRAINING ===============================
+sys.path.append("./Modelli")
+
+import GenDis_SA as gd2
+#import ltr_DCGAN as tr
+import ltr_LSGAN as tr
+###=============================================
+```
+in modo da importare la architettura voluta e l'algoritmo di training adatto.
+
+La parte sotto:
+```python
+            ## Output training stats
+            if i % 50 == 0:
+                # stringa relativa ad epoche e dati
+                oo = '[%d/%d][%d/%d]\t' % (epoch, pl["num_epochs"],  i, len(dataloader))
+                # stringa relativa allo stato dell'apprendimento
+                ss = tr.stringaStato( datiTR )
+                print(oo + ss)
+
+            # Save Losses for plotting later
+            tr.G_losses.append(datiTR[0].item())
+            tr.D_losses.append(datiTR[1].item())
+
+```
+e' da customizzare e riguarda la stampa del report ad ogni batch.
+
+Lanciare quindi:
+```bash
+python train_GAN.py parametri.yaml
+```
+
+
+## Storia delle modifiche
+###  23 giugno 2020
 incapsulati trainingStep e accessori in un unico file di libreria.
 Il file ltr_**GAN.py diventa il file da cambiare quando occorre implementare un nuovo algoritmo di training. Il file va chiamato dentro train_GAN.py 
 
-## 22 giugno 2020
+### 22 giugno 2020
 Aggiunto salvataggio della rete e dell'ottimizzatore.
 Tutorial in https://pytorch.org/tutorials/beginner/saving_loading_models.html#saving-loading-a-general-checkpoint-for-inference-and-or-resuming-training
 
-## 19 giugno 2020
+### 19 giugno 2020
 Creo una classe GAN per Genratore e Discriminatore
 
-## 18 giugno 2020
+### 18 giugno 2020
 
-## 17 giugno 2020
+### 17 giugno 2020
 Avviato un esperimento con il dropout in G (oltre che in D)
 
-## 15 giugno 2020
+### 15 giugno 2020
 Aggiunta versione Least Square GAN
 
-## 12 giugno 2020
+### 12 giugno 2020
 
-## 11 giugno 2020
+### 11 giugno 2020
 Usata spectral norm gia' presente in pytorch
 
 Aggiunto dropout nel Discriminatore
 
 Aggiunto programma per il plot delle loss di D e G
 
-## 10 giugno 2020
+### 10 giugno 2020
 
 * train_DCGAN.py
   e' il programma la lanciare con argomento un file di parametri ( per esempio train_DCGAN.py parametri_BASE.yaml)
@@ -50,7 +89,7 @@ Tutti i commenti e le modifiche sostanziali vanno fatte prima in questo file, in
 Viene creata una directory con dettagli e risultati del run
 I risultati sono variabili, e' necessario fare altri esperimenti.
 
-## 17 febbraio 2020
+### 17 febbraio 2020
 
 Lanciato su macchina Deep un apprendimento su celeba-HQ 1024 x 1024 per generare immagini 128 x 128.
 
@@ -62,7 +101,7 @@ GenDis5 funziona per 63, 128 e forse 256. Relazione fra k e dimensione della imm
 
 Il file GenDis4 a 128 funziona, quindi modifico per fare il ciclo nella creazione degli strati
 
-## 10 febbraio 2020
+### 10 febbraio 2020
 
 ![dcgan_generator](/home/riccardo/Desktop/Link to Mia ProGAN/Inizio con una DCGAN/2== Modello a risoluzione maggiore/figure/dcgan_generator.png)
 
@@ -72,31 +111,31 @@ class Generator(nn.Module):
         super(Generator, self).__init__()
         self.ngpu = ngpu
         self.main = nn.Sequential(
-            # input is Z, going into a convolution
+            ##input is Z, going into a convolution
             
             nn.ConvTranspose2d( nz, ngf * 8, 4, 1, 0, bias=False),
             nn.BatchNorm2d(ngf * 8),
             nn.ReLU(True),
-            # state size. (ngf*8) x 4 x 4
+            ##state size. (ngf*8) x 4 x 4
             
             nn.ConvTranspose2d(ngf * 8, ngf * 4, 4, 2, 1, bias=False),
             nn.BatchNorm2d(ngf * 4),
             nn.ReLU(True),
-            # state size. (ngf*4) x 8 x 8
+            ##state size. (ngf*4) x 8 x 8
             
             nn.ConvTranspose2d( ngf * 4, ngf * 2, 4, 2, 1, bias=False),
             nn.BatchNorm2d(ngf * 2),
             nn.ReLU(True),
-            # state size. (ngf*2) x 16 x 16
+            ##state size. (ngf*2) x 16 x 16
             
             nn.ConvTranspose2d( ngf * 2, ngf, 4, 2, 1, bias=False),
             nn.BatchNorm2d(ngf),
             nn.ReLU(True),
-            # state size. (ngf) x 32 x 32
+            ##state size. (ngf) x 32 x 32
             
             nn.ConvTranspose2d( ngf, nc, 4, 2, 1, bias=False),
             nn.Tanh()
-            # state size. (nc) x 64 x 64
+            ##state size. (nc) x 64 x 64
         )
 
     def forward(self, input):
@@ -146,7 +185,7 @@ Discriminator(
 
 
 
-## 5 febbraio 2020
+### 5 febbraio 2020
 
 dentro la dir [daverificare](/home/riccardo/Desktop/Link to Mia ProGAN/Inizio con una DCGAN/daverificare) c'e' la [DCGAN modificata](/home/riccardo/Desktop/Link to Mia ProGAN/Inizio con una DCGAN/daverificare/dcgan2.py) che volevo fare
 
@@ -155,7 +194,7 @@ competizioni pee la classificazione di immagini istologiche:
 - [kaggle1](https://www.kaggle.com/c/histopathologic-cancer-detection)
 - [grand challenge](https://grand-challenge.org/)
 
-##### [Articolo su medical imagining generation](https://paperswithcode.com/task/medical-image-generation)
+### ### [Articolo su medical imagining generation](https://paperswithcode.com/task/medical-image-generation)
 
 Vediamo per quale motivo non riesco a visualizzare le immagini in output. 
 
@@ -164,18 +203,18 @@ Per la visualizzazione di una singola immagine generata dalla DCGAN nella [direc
 ```python
 from PIL import Image
 
-# GENERAZIONE DELLA IMMAGINE
-# generazione del rumore (seme)
+##GENERAZIONE DELLA IMMAGINE
+##generazione del rumore (seme)
 fixed_noise = torch.randn(1, nz, 1, 1, device=device)
-# generazione immagine
+##generazione immagine
 with torch.no_grad():
     fake = netG(fixed_noise).detach().cpu()
-# prelievo della immagine (corrispondente a unsqueeze)    
+##prelievo della immagine (corrispondente a unsqueeze)    
 img = fake[0]
-# # trasformazione in array (H x W x C)
+### #trasformazione in array (H x W x C)
 img2 = np.array( np.transpose(img,(1,2,0)) )
 
-# normalizzazione
+##normalizzazione
 min_ = np.min(img2)
 max_ = np.max(img2)
 
@@ -183,7 +222,7 @@ img2 = np.add(img2, -min_)
 img2 = np.divide(img2, (max_-min_ +1e-5))
 img2 = np.multiply(img2,255.0)
 
-# trasformazione 
+##trasformazione 
 img2 = np.uint8(img2)
 
 img2 = Image.fromarray(img2)
@@ -196,7 +235,7 @@ img2.show()
 
 
 
-## 4 febbraio 2020
+### 4 febbraio 2020
 
 Seguo il [tutorial di pytorch](https://pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html) 
 
