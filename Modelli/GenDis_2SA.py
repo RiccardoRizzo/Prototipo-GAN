@@ -13,7 +13,7 @@ import torch
 
 #===============================================================================
 
-kernel_size = 3 # uso un kernel di dim 3 come consigliato in Large scale.. https://arxiv.org/abs/1809.11096
+kernel_size = 4 
 stride = 2
 padding =1
 
@@ -48,12 +48,14 @@ class Discriminator(nn.Module):
         #--------------------------------------------
         layers.append(DisLayerSN_d(ndf, 0))
         layers.append(DisLayerSN_d(ndf, 1))
-        layers.append(DisLayerSN_d(ndf, 2))
+
         layers.append(sa.Self_Attn(ndf*(2**2), "relu"))
-        layers.append(DisLayerSN_d(ndf, 3))
+
+        layers.append(DisLayerSN_d(ndf, 2))
+       
         #--------------------------------------------
 
-        d_out = 2**4
+        d_out = 2**3
 
         layers.append(sa.Self_Attn(ndf*d_out, "relu"))
         
@@ -97,17 +99,16 @@ class Generator(nn.Module):
         layers = []
 
  
-        d_in = 2**4
+        d_in = 2**3
         layers.append( nn.ConvTranspose2d( nz, ngf * d_in, kernel_size, 1, 0, bias=False) )
         layers.append( nn.BatchNorm2d(ngf * d_in) )
         layers.append( nn.ReLU(True) )
         # state size. (ngf*16) x 4 x 4
             
         #------------------------------------------
-        layers.append( GenLayerSN(ngf, 4) )
         layers.append( GenLayerSN(ngf, 3) )
         layers.append( GenLayerSN(ngf, 2) )
-        layers.append(sa.Self_Attn(ngf*(2**2),"relu"))
+        layers.append(sa.Self_Attn(ngf*(2**1),"relu"))
         layers.append( GenLayerSN(ngf, 1) )
         #------------------------------------------
 

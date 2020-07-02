@@ -1,5 +1,5 @@
 import torch.nn as nn
-import Layers as ll
+#import Layers as ll
 import self_attention as sa
 import torch
 
@@ -13,12 +13,26 @@ import torch
 
 #===============================================================================
 
-kernel_size = 4
+kernel_size = 3 # uso un kernel di dim 3 come consigliato in Large scale.. https://arxiv.org/abs/1809.11096
 stride = 2
 padding =1
 
+#################################################################################################
+def DisLayerSN_d(ndf, k):
+    """
+    Layer che usa la spectral norm
+    """
+    d_in = 2**k 
+    d_out = 2**(k+1)
 
+    out = nn.Sequential(nn.utils.spectral_norm(
+                        nn.Conv2d(ndf*d_in, ndf*d_out, kernel_size, stride=stride, padding=padding, bias=False)),                        
+                        nn.Dropout2d(),
+                        nn.BatchNorm2d(ndf * d_out), 
+                        nn.LeakyReLU(0.2, inplace=True) )
+    return out
 
+#---------------------------------------
 
 class Discriminator(nn.Module):
     def __init__(self, ngpu, ndf, nc, k):
@@ -32,11 +46,13 @@ class Discriminator(nn.Module):
         # state size. (ndf) x 64 x 64
 
         #--------------------------------------------
-        for i in range(k):
-            layers.append(ll.DisLayerSN_d(ndf, i))
+        layers.append(DisLayerSN_d(ndf, 0))
+        layers.append(DisLayerSN_d(ndf, 1))
+        layers.append(DisLayerSN_d(ndf, 2))
+        layers.append(DisLayerSN_d(ndf, 3))
         #--------------------------------------------
 
-        d_out = 2**k
+        d_out = 2**4
 
         layers.append(sa.Self_Attn(ndf*d_out, "relu"))
         
@@ -55,10 +71,22 @@ class Discriminator(nn.Module):
         return y
 
 
-#===============================================================================
 
 
+#################################################################################################
+def GenLayerSN(ngf, k):
+    """
+    Layer che usa la spectral norm
+    """
+    d_in = 2**k 
+    d_out = 2**(k-1)
+    out = nn.Sequential( nn.utils.spectral_norm(
+                         nn.ConvTranspose2d(ngf * d_in, ngf * d_out, kernel_size, stride, padding, bias=False)),
+                         nn.BatchNorm2d(ngf * d_out),
+                         nn.ReLU(True) )
+    return out
 
+#-----------------------------------------------
 
 class Generator(nn.Module):
     def __init__(self, ngpu, nz, ngf, nc, k):
@@ -68,16 +96,17 @@ class Generator(nn.Module):
         layers = []
 
  
-        d_in = 2**k
+        d_in = 2**4
         layers.append( nn.ConvTranspose2d( nz, ngf * d_in, kernel_size, 1, 0, bias=False) )
         layers.append( nn.BatchNorm2d(ngf * d_in) )
         layers.append( nn.ReLU(True) )
         # state size. (ngf*16) x 4 x 4
             
         #------------------------------------------
-        for i in range(k):
-            n = k-i 
-            layers.append( ll.GenLayerSN(ngf, n) )
+        layers.append( GenLayerSN(ngf, 4) )
+        layers.append( GenLayerSN(ngf, 3) )
+        layers.append( GenLayerSN(ngf, 2) )
+        layers.append( GenLayerSN(ngf, 1) )
         #------------------------------------------
 
         layers.append(sa.Self_Attn(ngf,"relu"))    
