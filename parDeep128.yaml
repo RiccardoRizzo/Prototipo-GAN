@@ -1,8 +1,11 @@
 #################################################################
 ###### FILE MODIFICATO PER LA MACCHINA DEEP
 #################################################################
+# pretrained weights file for generator (vuoto se NoneType)
+netD_checkpoint : 
+netG_checkpoint : 
 # nome del modello
-nomeModello : "Prova128_SA"
+nomeModello : "Prova_2SA_128"
 
 #nomeFile per i grafici losses
 nomeFileLosses : ["G_losses.csv", "D_losses.csv"]
@@ -11,7 +14,7 @@ nomeFileLosses : ["G_losses.csv", "D_losses.csv"]
 dataroot : "~/Focus/Datasets/immagini/celeba"
 
 # Number of workers for dataloader
-workers : 3
+workers : 2
 
 # Batch size during training
 batch_size : 64
@@ -24,21 +27,43 @@ image_size : 128
 nc : 3
 
 # Size of z latent vector (i.e. size of generator input)
-nz : 200
+nz : 100
 
-# Size of feature maps in generator
-ngf : 128
-# Size of feature maps in discriminator
-ndf : 128
+# Size of feature maps in generator (ngf) and discriminator (ndf)
+# Il numero di kernel influisce sulla grandezza dei layer delle reti, ma non sulla
+# grandezza della immagine
+ngf : 64
+ndf : 64
   
 # Number of training epochs
-num_epochs : 40
+num_epochs : 50
+
 
 # Learning rate for optimizers
 lrd : 0.0002
-lrg : 0.0002
+lrg : 0.0001
 
 # Beta1 hyperparam for Adam optimizers
+# sembra che un valore accettabile per beta1 sia 0.5 
+# https://arxiv.org/pdf/1511.06434.pdf
+
+# Adam parameters
+#=================
+# alpha. Also referred to as the learning rate or step size. 
+#        The proportion that weights are updated (e.g. 0.001). 
+#        Larger values (e.g. 0.3) results in faster initial learning 
+#        before the rate is updated. Smaller values (e.g. 1.0E-5) 
+#        slow learning right down during training
+
+# beta1. The exponential decay rate for the first moment estimates (e.g. 0.9).
+
+# beta2. The exponential decay rate for the second-moment estimates (e.g. 0.999). 
+#        This value should be set close to 1.0 on problems with a sparse gradient 
+#        (e.g. NLP and computer vision problems).
+
+# epsilon. Is a very small number to prevent any division by 
+#          zero in the implementation (e.g. 10E-8).
+#-------------------------------------------------
 beta1 : 0.9
 beta2 : 0.999
 
