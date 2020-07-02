@@ -218,6 +218,8 @@ def main(pl, paramFile):
     nomeFile = os.path.join(nomeDir, pl["nomeModello"]+"_architettura.txt")
     stringa = str(netD) +"\n\n"+ str(netG) 
     with open(nomeFile, "w") as text_file:
+        text_file.write("############################\n")
+        text_file.writable("File rete in " + gd2.__file__ + "\n")
         text_file.write(stringa)
         text_file.write("\nAlgoritmo apprendimento in " + tr.__file__)
     print(stringa)
