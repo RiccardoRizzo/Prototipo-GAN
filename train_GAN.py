@@ -219,7 +219,7 @@ def main(pl, paramFile):
     stringa = str(netD) +"\n\n"+ str(netG) 
     with open(nomeFile, "w") as text_file:
         text_file.write("############################\n")
-        text_file.write("File rete in " + gd2.__file__ + "\n")
+        text_file.write("File rete in " + gd2.__file__ + "\n\n\n")
         text_file.write(stringa)
         text_file.write("\nAlgoritmo apprendimento in " + tr.__file__)
     print(stringa)
