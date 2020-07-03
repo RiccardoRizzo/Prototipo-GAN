@@ -17,7 +17,7 @@ dataroot : "~/Focus/Datasets/immagini/celeba"
 workers : 2
 
 # Batch size during training
-batch_size : 64
+batch_size : 32
 
 # Spatial size of training images. All images will be resized to this
 #   size using a transformer.
@@ -68,10 +68,10 @@ beta1 : 0.9
 beta2 : 0.999
 
 # Number of GPUs available. Se si usa 0 si forza il CPU mode.
-ngpu : 1
+ngpu : 0
 
 # Numero di campioni da usare nel debug, se -1 allora si usano tutti i sample nel dataset
-n_samples : -1
+n_samples : 10000
 
 # Number of layers log_2 (image_size)-3
 # k : 2

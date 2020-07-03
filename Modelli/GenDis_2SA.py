@@ -13,9 +13,12 @@ import torch
 
 #===============================================================================
 
+#######################################
+## DA NON TOCCARE 
 kernel_size = 4 
 stride = 2
 padding =1
+#######################################
 
 #################################################################################################
 def DisLayerSN_d(ndf, k):
@@ -45,6 +48,13 @@ class Discriminator(nn.Module):
         layers.append(nn.LeakyReLU(0.2, inplace=True))
         # state size. (ndf) x 64 x 64
 
+        k=4
+        # -------------------------------------------
+        # per immagini 64 x 64 ci volgliono 3  strati
+        # e k = 3
+        #
+        # per immagini 128 x 128 ci vogliono 4 strati 
+        # e k = 4
         #--------------------------------------------
         layers.append(DisLayerSN_d(ndf, 0))
         layers.append(DisLayerSN_d(ndf, 1))
@@ -52,10 +62,11 @@ class Discriminator(nn.Module):
         layers.append(sa.Self_Attn(ndf*(2**2), "relu"))
 
         layers.append(DisLayerSN_d(ndf, 2))
+        layers.append(DisLayerSN_d(ndf, 3))
        
         #--------------------------------------------
 
-        d_out = 2**3
+        d_out = 2**k
 
         layers.append(sa.Self_Attn(ndf*d_out, "relu"))
         
@@ -98,14 +109,23 @@ class Generator(nn.Module):
 
         layers = []
 
- 
-        d_in = 2**3
+        k=4
+        d_in = 2**k
         layers.append( nn.ConvTranspose2d( nz, ngf * d_in, kernel_size, 1, 0, bias=False) )
         layers.append( nn.BatchNorm2d(ngf * d_in) )
         layers.append( nn.ReLU(True) )
         # state size. (ngf*16) x 4 x 4
             
+
+        # -------------------------------------------
+        # per immagini 64 x 64 ci volgliono 3  strati
+        # e k = 3
+        #
+        # per immagini 128 x 128 ci vogliono 4 strati 
+        # e k = 4
+        #--------------------------------------------
         #------------------------------------------
+        layers.append( GenLayerSN(ngf, 4) )
         layers.append( GenLayerSN(ngf, 3) )
         layers.append( GenLayerSN(ngf, 2) )
         layers.append(sa.Self_Attn(ngf*(2**1),"relu"))
