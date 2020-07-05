@@ -32,8 +32,8 @@ nz : 100
 # Size of feature maps in generator (ngf) and discriminator (ndf)
 # Il numero di kernel influisce sulla grandezza dei layer delle reti, ma non sulla
 # grandezza della immagine
-ngf : 64
-ndf : 64
+ngf : 32
+ndf : 32
   
 # Number of training epochs
 num_epochs : 50
@@ -68,10 +68,10 @@ beta1 : 0.9
 beta2 : 0.999
 
 # Number of GPUs available. Se si usa 0 si forza il CPU mode.
-ngpu : 0
+ngpu : 1
 
 # Numero di campioni da usare nel debug, se -1 allora si usano tutti i sample nel dataset
-n_samples : 10000
+n_samples : -1
 
 # Number of layers log_2 (image_size)-3
 # k : 2
