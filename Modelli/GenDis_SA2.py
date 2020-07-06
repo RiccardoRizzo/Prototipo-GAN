@@ -39,6 +39,7 @@ class Discriminator(nn.Module):
         d_out = 2**k
 
         layers.append(sa.Self_Attn(ndf*d_out, "relu"))
+       
         layers.append(sa.Self_Attn(ndf*d_out, "relu"))
 
         layers.append(nn.Conv2d(ndf * d_out, 1, kernel_size, stride=1, padding=0, bias=False))
@@ -82,6 +83,7 @@ class Generator(nn.Module):
         #------------------------------------------
 
         layers.append(sa.Self_Attn(ngf,"relu"))  
+
         layers.append(sa.Self_Attn(ngf,"relu"))  
         
         layers.append(nn.ConvTranspose2d(    ngf,      nc, kernel_size, stride, padding, bias=False) )
