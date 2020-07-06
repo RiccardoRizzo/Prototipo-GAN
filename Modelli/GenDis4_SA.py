@@ -20,6 +20,15 @@ import torch
 kernel_size = 4 
 stride = 2
 padding =1
+# Nella costruzione della rete occorre ricordare che
+# ------- Per il Generatore -------------------
+# se risulta Kernel_size = stride + 2 * padding
+# allora    H_out = H_in * stride
+#           W_out = W_in * stride
+# ------- Per il discriminatore ---------------
+# se risulta Kernel_size = stride + 2 * padding
+# allora    H_out = H_in / stride
+#           W_out = W_in / stride
 #######################################
 
 #################################################################################################
