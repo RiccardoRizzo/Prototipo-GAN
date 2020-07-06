@@ -5,6 +5,10 @@ from torch.autograd import Variable
 from spectral import SpectralNorm
 import numpy as np
 
+###
+# https://github.com/heykeetae/Self-Attention-GAN/blob/master/sagan_models.py
+###
+
 class Self_Attn(nn.Module):
     """ Self attention Layer"""
     def __init__(self,in_dim,activation):
