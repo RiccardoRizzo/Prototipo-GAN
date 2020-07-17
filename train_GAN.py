@@ -260,7 +260,9 @@ def main(pl, paramFile):
         # Fine dell'epoca --------------------------------------
         # salva un provino delle immagini generate ed i modelli relativi
         nomeFile = pl["nomeModello"]+ "_" +str(epoch)
-        salvaCheckpoint(nomeDir, nomeFile, netD, netG, optimizerD, optimizerG, fixed_noise)
+        # salva i modelli ogni 10 epoche
+        if epoch %10 == 0:
+            salvaCheckpoint(nomeDir, nomeFile, netD, netG, optimizerD, optimizerG, fixed_noise)
 
     # Fine del training =======================================
     nomeFile = pl["nomeModello"]+ "_"+"FINALE"
