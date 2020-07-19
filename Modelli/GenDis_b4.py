@@ -13,17 +13,31 @@ import torch
 
 #===============================================================================
 
-kernel_size = 3 # uso un kernel di dim 3 come consigliato in Large scale.. https://arxiv.org/abs/1809.11096
-stride = 2
+###############################################
+## CAMBIARE PER OTTENERE LA MOLTIPLICAZIONE 
+## PER 4 NELLA CREAZIONE DELLE IMMAGINI
+# -------------------------------------------- 
+kernel_size = 6 
+stride = 4
 padding =1
+# Nella costruzione della rete occorre ricordare che
+# ------- Per il Generatore -------------------
+# se risulta Kernel_size = stride + 2 * padding
+# allora    H_out = H_in * stride
+#           W_out = W_in * stride
+# ------- Per il discriminatore ---------------
+# se risulta Kernel_size = stride + 2 * padding
+# allora    H_out = H_in / stride
+#           W_out = W_in / stride
+###############################################
 
 #################################################################################################
 def DisLayerSN_d(ndf, k):
     """
     Layer che usa la spectral norm
     """
-    d_in = 2**k 
-    d_out = 2**(k+1)
+    d_in = stride**k 
+    d_out = stride**(k+1)
 
     out = nn.Sequential(nn.utils.spectral_norm(
                         nn.Conv2d(ndf*d_in, ndf*d_out, kernel_size, stride=stride, padding=padding, bias=False)),                        
@@ -48,11 +62,10 @@ class Discriminator(nn.Module):
         #--------------------------------------------
         layers.append(DisLayerSN_d(ndf, 0))
         layers.append(DisLayerSN_d(ndf, 1))
-        layers.append(DisLayerSN_d(ndf, 2))
-        layers.append(DisLayerSN_d(ndf, 3))
+
         #--------------------------------------------
 
-        d_out = 2**4
+        d_out = stride**2
 
         layers.append(sa.Self_Attn(ndf*d_out, "relu"))
         
@@ -78,8 +91,8 @@ def GenLayerSN(ngf, k):
     """
     Layer che usa la spectral norm
     """
-    d_in = 2**k 
-    d_out = 2**(k-1)
+    d_in = stride**k 
+    d_out = stride**(k-1)
     out = nn.Sequential( nn.utils.spectral_norm(
                          nn.ConvTranspose2d(ngf * d_in, ngf * d_out, kernel_size, stride, padding, bias=False)),
                          nn.BatchNorm2d(ngf * d_out),
@@ -96,16 +109,14 @@ class Generator(nn.Module):
         layers = []
 
  
-        d_in = 2**4
+        d_in = stride**2
         layers.append( nn.ConvTranspose2d( nz, ngf * d_in, kernel_size, 1, 0, bias=False) )
         layers.append( nn.BatchNorm2d(ngf * d_in) )
         layers.append( nn.ReLU(True) )
         # state size. (ngf*16) x 4 x 4
             
         #------------------------------------------
-        layers.append( GenLayerSN(ngf, 4) )
-        layers.append( GenLayerSN(ngf, 3) )
-        layers.append( GenLayerSN(ngf, 2) )
+
         layers.append( GenLayerSN(ngf, 1) )
         #------------------------------------------
 
