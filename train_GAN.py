@@ -74,7 +74,7 @@ def saveFakeImages(fake, nomefile):
     img2 = Image.fromarray(img2)
     img2.save(nomefile)
 
-def salvaImmagini(nomeDir, nomeFile, fixed_noise):
+def salvaImmagini(nomeDir, nomeFile, netG, fixed_noise):
     with torch.no_grad():
             fake = netG(fixed_noise).detach().cpu()
             nomeFileImage = os.path.join(nomeDir, nomeFile +".jpg")
@@ -262,7 +262,7 @@ def main(pl, paramFile):
         # salva un provino delle immagini generate ed i modelli relativi
         nomeFile = pl["nomeModello"]+ "_" +str(epoch)
 
-        salvaImmagini(nomeDir, nomeFile, fixed_noise)
+        salvaImmagini(nomeDir, nomeFile, netG, fixed_noise)
         # salva i modelli ogni cadenza_epoche   
         if epoch % pl["cadenza_epoche"] == 0:
             salvaCheckpoint(nomeDir, nomeFile, netD, netG, optimizerD, optimizerG, fixed_noise)
