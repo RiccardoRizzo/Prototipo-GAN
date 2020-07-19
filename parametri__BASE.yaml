@@ -38,8 +38,8 @@ ndf : 128
 # Number of training epochs
 num_epochs : 50
 
-
-
+# cadenza salvataggio modelli
+cadenza_epoche : 10
 
 # Learning rate for optimizers
 lrd : 0.0002
