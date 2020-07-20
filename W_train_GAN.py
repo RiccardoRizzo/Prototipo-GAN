@@ -208,32 +208,26 @@ def main(pl, paramFile):
     #random.seed(manualSeed)
     #torch.manual_seed(manualSeed)
 
-    # Spatial size of training images. All images will be resized to this
-    # size using a transformer.
-    image_size = pl["image_size"]
-    # Size of feature maps in generator
-    ngf = pl["ngf"]
-    # Size of feature maps in discriminator
-    ndf = pl["ndf"]
+
     # number of layers
-    k = int(math.log(image_size, 2)) - 3
+    k = int(math.log(pl["image_size"], 2)) - 3
     # k = pl["k"]
 
  
-    dataloader = createDataloader(image_size, pl["dataroot"], pl["n_samples"], pl["batch_size"], pl["workers"])
+    dataloader = createDataloader(pl["image_size"], pl["dataroot"], pl["n_samples"], pl["batch_size"], pl["workers"])
     
     # Decide which device we want to run on
     device = torch.device("cuda:0" if (torch.cuda.is_available() and pl["ngpu"] > 0) else "cpu")
 
     # crea le reti D e G e gli ottimizzatori================================================
-    netD = creaD(pl["ngpu"], ndf, pl["nc"], k, device)
+    netD = creaD(pl["ngpu"], pl["ndf"], pl["nc"], k, device)
     optimizerD = optim.RMSprop(netD.parameters(), lr=pl["lrd"])
     if pl["netD_checkpoint"] is not None:
         checkpoint = torch.load(pl["netD_checkpoint"])
         netD.load_state_dict(checkpoint['model_state_dict'])
         optimizerD.load_state_dict(checkpoint['optimizer_state_dict'])
 
-    netG = creaG(pl["ngpu"], pl["nz"], ngf, pl["nc"], k, device)
+    netG = creaG(pl["ngpu"], pl["nz"], pl["ngf"], pl["nc"], k, device)
     optimizerG = optim.RMSprop(netG.parameters(), lr=pl["lrg"])
     # Create batch of latent vectors that we will use to visualize the progression of the generator
     fixed_noise = torch.randn(pl["batch_size"], pl["nz"], 1, 1, device=device)
