@@ -208,14 +208,14 @@ def main(pl, paramFile):
 
     # crea le reti D e G e gli ottimizzatori================================================
     netD = creaD(pl["ngpu"], ndf, pl["nc"], k, device)
-    optimizerD = optim.RMSprop(netD.parameters(), lr=pl["lrd"]))
+    optimizerD = optim.RMSprop(netD.parameters(), lr=pl["lrd"])
     if pl["netD_checkpoint"] is not None:
         checkpoint = torch.load(pl["netD_checkpoint"])
         netD.load_state_dict(checkpoint['model_state_dict'])
         optimizerD.load_state_dict(checkpoint['optimizer_state_dict'])
 
     netG = creaG(pl["ngpu"], pl["nz"], ngf, pl["nc"], k, device)
-    optimizerG = optim.RMSprop(netG.parameters(), lr=pl["lrg"]))
+    optimizerG = optim.RMSprop(netG.parameters(), lr=pl["lrg"])
     # Create batch of latent vectors that we will use to visualize the progression of the generator
     fixed_noise = torch.randn(pl["batch_size"], pl["nz"], 1, 1, device=device)
 
