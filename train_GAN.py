@@ -159,6 +159,32 @@ def createDataloader(image_size, dataroot, n_samples, batch_size, workers):
     return dataloader
 
 
+def creaDocu(pl, paramFile):
+    # e copia i file usati (questo compreso)  nella directory 
+    # dell'esperimento per riferimenti futuri
+    today = datetime.now()
+    nomeDir = "./" + pl["nomeModello"] + "_" +today.strftime('%Y_%m_%d_%H_%M')
+    os.mkdir(nomeDir)
+
+    nomeDirPy = nomeDir + "/sources"
+    os.mkdir(nomeDirPy)
+    # copio il file di parametri nella dir dell'esperimento
+    newPath = shutil.copy(paramFile, nomeDir)
+    # copio il file dei modelli
+    newPath = shutil.copy(gd2.__file__, nomeDirPy)
+    # copio il file del training
+    newPath = shutil.copy(tr.__file__, nomeDirPy)
+    # copio questo file nella directory
+    newPath = shutil.copy(__file__, nomeDirPy)
+
+    # zippa i sorgenti
+    shutil.make_archive(nomeDir+"/sources", 'zip', nomeDirPy)
+    # cancella la dir
+    shutil.rmtree(nomeDirPy)
+
+    return nomeDir
+
+
 ##======================================================
 ##======================================================
 ##======================================================
@@ -183,14 +209,8 @@ def main(pl, paramFile):
     k = int(math.log(image_size, 2)) - 3
     # k = pl["k"]
 
-    # creazione della directory dell'esperimento ==================================
-    today = datetime.now()
-    nomeDir = "./" + pl["nomeModello"] + "_" +today.strftime('%Y_%m_%d_%H_%M')
-    os.mkdir(nomeDir)
-    # copio il file di parametri nella dir dell'esperimento
-    newPath = shutil.copy(paramFile, nomeDir)
-    #==============================================================================
 
+    # creazione del dataloader =============================================================
     dataloader = createDataloader(image_size, pl["dataroot"], pl["n_samples"], pl["batch_size"], pl["workers"])
     
     # Decide which device we want to run on
@@ -215,6 +235,8 @@ def main(pl, paramFile):
         optimizerG.load_state_dict(checkpoint['optimizer_state_dict'])
         fixed_noise = checkpoint['fixed_noise']
     
+    # creazione della directory dell'esperimento ==================================
+    nomeDir = creaDocu(pl, paramFile)
     # Print the model ==================================
     nomeFile = os.path.join(nomeDir, pl["nomeModello"]+"_architettura.txt")
     stringa = str(netD) +"\n\n"+ str(netG) 
