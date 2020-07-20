@@ -14,8 +14,8 @@ import glob
 #       WASSERSTEIN GAN
 #   * No log in the loss. The output of D is no longer a probability, 
 #       hence we do not apply sigmoid at the output of D
-#   * Clip the weight of D
-#   * Train D more than G
+#   * Clip the weight of D          <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+#   * Train D more than G           <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<  
 #   * Use RMSProp instead of ADAM
 #   * Lower learning rate, the paper uses
 #           \alpha = 0.00005

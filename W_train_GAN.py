@@ -35,8 +35,8 @@ import shutil
 ###  DI TRAINING ===============================
 sys.path.append("./Modelli")
 
-import GenDis_b4 as gd2
-import ltr_DCGAN as tr
+import W_GenDis5 as gd2
+import W_ltr_DCGAN as tr
 # import ltr_LSGAN as tr # RICORDARSI CHE DISC. DEVE ESSERE SENZA SIGMOIDE IN OUT
 ###=============================================
 
@@ -48,31 +48,25 @@ import ltr_DCGAN as tr
 #       hence we do not apply sigmoid at the output of D
 #   * Clip the weight of D
 #   * Train D more than G
-#   * Use RMSProp instead of ADAM
+#   * Use RMSProp instead of ADAM  <<<<<<<<<<<<<<<<<<<<<<<<
 #   * Lower learning rate, the paper uses
 #           \alpha = 0.00005
 #
 #########################################################################
 
-
-
-# Adam parameters
-#=================
-# alpha. Also referred to as the learning rate or step size. 
-#        The proportion that weights are updated (e.g. 0.001). 
-#        Larger values (e.g. 0.3) results in faster initial learning 
-#        before the rate is updated. Smaller values (e.g. 1.0E-5) 
-#        slow learning right down during training
-
-# beta1. The exponential decay rate for the first moment estimates (e.g. 0.9).
-
-# beta2. The exponential decay rate for the second-moment estimates (e.g. 0.999). 
-#        This value should be set close to 1.0 on problems with a sparse gradient 
-#        (e.g. NLP and computer vision problems).
-
-# epsilon. Is a very small number to prevent any division by 
-#          zero in the implementation (e.g. 10E-8).
-#-------------------------------------------------
+#############################################
+# RMSprop optimizer
+#
+# torch.optim.RMSprop(params, 
+#                       lr=0.01, 
+#                       alpha=0.99, 
+#                       eps=1e-08, 
+#                       weight_decay=0,
+#                       momentum=0, 
+#                       centered=False)
+# Implements RMSprop algorithm.
+#
+#
 
 #-------------------------------------------------
 def saveFakeImages(fake, nomefile):
@@ -214,14 +208,14 @@ def main(pl, paramFile):
 
     # crea le reti D e G e gli ottimizzatori================================================
     netD = creaD(pl["ngpu"], ndf, pl["nc"], k, device)
-    optimizerD = optim.Adam(netD.parameters(), lr=pl["lrd"], betas=(pl["beta1"], pl["beta2"]))
+    optimizerD = optim.RMSprop(netD.parameters(), lr=pl["lrd"]))
     if pl["netD_checkpoint"] is not None:
         checkpoint = torch.load(pl["netD_checkpoint"])
         netD.load_state_dict(checkpoint['model_state_dict'])
         optimizerD.load_state_dict(checkpoint['optimizer_state_dict'])
 
     netG = creaG(pl["ngpu"], pl["nz"], ngf, pl["nc"], k, device)
-    optimizerG = optim.Adam(netG.parameters(), lr=pl["lrd"], betas=(pl["beta1"], pl["beta2"]))
+    optimizerG = optim.RMSprop(netG.parameters(), lr=pl["lrg"]))
     # Create batch of latent vectors that we will use to visualize the progression of the generator
     fixed_noise = torch.randn(pl["batch_size"], pl["nz"], 1, 1, device=device)
 

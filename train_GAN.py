@@ -205,7 +205,7 @@ def main(pl, paramFile):
         optimizerD.load_state_dict(checkpoint['optimizer_state_dict'])
 
     netG = creaG(pl["ngpu"], pl["nz"], ngf, pl["nc"], k, device)
-    optimizerG = optim.Adam(netG.parameters(), lr=pl["lrd"], betas=(pl["beta1"], pl["beta2"]))
+    optimizerG = optim.Adam(netG.parameters(), lr=pl["lrg"], betas=(pl["beta1"], pl["beta2"]))
     # Create batch of latent vectors that we will use to visualize the progression of the generator
     fixed_noise = torch.randn(pl["batch_size"], pl["nz"], 1, 1, device=device)
 
