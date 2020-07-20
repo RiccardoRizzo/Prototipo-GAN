@@ -35,7 +35,7 @@ import shutil
 ###  DI TRAINING ===============================
 sys.path.append("./Modelli")
 
-import GenDis_SA2 as gd2
+import GenDis_b4 as gd2
 import ltr_DCGAN as tr
 # import ltr_LSGAN as tr # RICORDARSI CHE DISC. DEVE ESSERE SENZA SIGMOIDE IN OUT
 ###=============================================
