@@ -266,6 +266,8 @@ def main(pl, paramFile):
 
 
     print("Inizio apprendimento, tutti i dati saranno salvati in "+ nomeDir)
+    nomeFile_G_losses = os.path.join(nomeDir, pl["nomeModello"] + "_"+pl["nomeFileLosses"][0])
+    nomeFile_D_losses = os.path.join(nomeDir, pl["nomeModello"] + "_"+pl["nomeFileLosses"][1])
     # For each epoch
     for epoch in range(pl["num_epochs"]):
         # For each batch in the dataloader
@@ -294,6 +296,14 @@ def main(pl, paramFile):
         nomeFile = pl["nomeModello"]+ "_" +str(epoch)
 
         salvaImmagini(nomeDir, nomeFile, netG, fixed_noise)
+
+        #tr.salvaCSV(tr.G_losses, nomeFile_G_losses)
+        tr.salvaLoss(tr.G_losses, nomeFile_G_losses)
+        tr.G_losses = []
+        #tr.salvaCSV(tr.D_losses, nomeFile_D_losses)
+        tr.salvaLoss(tr.D_losses, nomeFile_D_losses)
+        tr.D_losses = []
+
         # salva i modelli ogni cadenza_epoche   
         if epoch % pl["cadenza_epoche"] == 0:
             salvaCheckpoint(nomeDir, nomeFile, netD, netG, optimizerD, optimizerG, fixed_noise)
@@ -303,10 +313,10 @@ def main(pl, paramFile):
     salvaCheckpoint(nomeDir, nomeFile, netD, netG, optimizerD, optimizerG, fixed_noise)
 
 
-    nomeFile = os.path.join(nomeDir, pl["nomeModello"] + "_"+pl["nomeFileLosses"][0])
-    tr.salvaCSV(tr.G_losses, nomeFile)
-    nomeFile = os.path.join(nomeDir, pl["nomeModello"] + "_"+pl["nomeFileLosses"][1])
-    tr.salvaCSV(tr.D_losses, nomeFile)
+    #nomeFile = os.path.join(nomeDir, pl["nomeModello"] + "_"+pl["nomeFileLosses"][0])
+    #tr.salvaCSV(tr.G_losses, nomeFile)
+    #nomeFile = os.path.join(nomeDir, pl["nomeModello"] + "_"+pl["nomeFileLosses"][1])
+    #tr.salvaCSV(tr.D_losses, nomeFile)
     print("salvati i dati dell'apprendimento in ", nomeDir)
 
 
