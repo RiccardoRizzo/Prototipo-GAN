@@ -100,7 +100,8 @@ def salvaCSV(lista, nomefile):
     """
     Salva una delle strutture di sopra in un file csv
     """
-    with open(nomefile, 'w', newline='') as myfile:
+    with open(nomefile, 'a+', newline='') as myfile:
+    #with open(nomefile, 'w', newline='') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
         wr.writerow(lista)
 #---------------------------------------------------
