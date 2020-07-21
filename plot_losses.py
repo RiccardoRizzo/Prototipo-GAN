@@ -18,26 +18,30 @@ def findLossFiles(dirModello):
     print("trovati i file: " + " ".join(listaFile))
     return listaFile
 
+#----------------------------------------------------
+def loadLoss(nomefile):
+    with open(nomefile, 'r') as f:
+        buf = f.readlines()
+    buf = [float(x.strip()) for x in buf]
+    loss = np.array(buf)
 
-def plot(dirModello):
+    return loss
+
+#---------------------------------------------------
+def plotLosses(dirModello):
+
     nomeFileLosses = findLossFiles(dirModello)
     #print(nomeFileLosses)
 
     nomeFile = os.path.join(dirModello, nomeFileLosses[0])
-    #print(nomeFile)
-    with open(nomeFile, 'r') as f:
-        reader = csv.reader(f)
-        G_losses = list(reader)
-        
+    print(nomeFile)
+    G_losses = loadLoss(nomeFile)
+            
     nomeFile = os.path.join(dirModello, nomeFileLosses[1])
-    #print(nomeFile)
-    with open(nomeFile, 'r') as f:
-        reader = csv.reader(f)
-        D_losses = list(reader)
-        
-    G_losses = np.array([float(x) for x in  G_losses[0] ])
-    D_losses = np.array([float(x) for x in  D_losses[0] ])
+    print(nomeFile)
+    D_losses = loadLoss(nomeFile)
 
+    
     plt.figure(figsize=(10,5))
     plt.title("Generator and Discriminator Loss During Training")
     plt.plot(G_losses,label="G")
@@ -46,14 +50,13 @@ def plot(dirModello):
     plt.ylabel("Loss")
     plt.legend()
     plt.show()
-
-
+    
 
 if __name__ == "__main__":
 
     try:
         dirModello = sys.argv[1]
-        plot(dirModello)
+        plotLosses(dirModello)
     except:
         print('manca la directory che contiene i file di nome *losses.csv')
         sys.exit(1)  # abort

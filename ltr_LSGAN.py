@@ -82,38 +82,16 @@ Strutture per la memorizzazione dell'errore durante l'apprendimento
 """
 G_losses = []
 D_losses = []
+
+
 #---------------------------------------------------
-def salvaCSV(lista, nomefile):
+def salvaLoss(lista, nomefile):
     """
     Salva una delle strutture di sopra in un file csv
     """
-    with open(nomefile, 'w', newline='') as myfile:
-        wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
-        wr.writerow(lista)
-#---------------------------------------------------
-def loadCSV(nomeFile):
-    """
-    Carica il file csv salvato dalla funzione sopra
-    """
-    with open(nomeFile, 'r') as f:
-        reader = csv.reader(f)
-        G_losses = list(reader)
-    loss = np.array([float(x) for x in  G_losses[0] ])
-    return loss
-#---------------------------------------------------
-def plot(nomeFileLosses):
-    """
-    Routine da modificare a seconda della funzione di training
-    """
-    G_losses = loadCSV(nomeFileLosses) 
-    D_losses = loadCSV(nomeFileLosses)
-
-    plt.figure(figsize=(10,5))
-    plt.title("Generator and Discriminator Loss During Training")
-    plt.plot(G_losses,label="G")
-    plt.plot(D_losses,label="D")
-    plt.xlabel("iterations")
-    plt.ylabel("Loss")
-    plt.legend()
-    plt.show()
+    with open(nomefile, 'a+', newline='') as myfile:
+    #with open(nomefile, 'w', newline='') as myfile:
+        stringa = "\n".join(lista)
+        myfile.write(stringa)
+        myfile.write("\n")
 

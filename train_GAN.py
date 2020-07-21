@@ -287,7 +287,7 @@ def main(pl, paramFile):
         tr.salvaLoss(tr.G_losses, nomeFile_G_losses)
         tr.G_losses = []
         #tr.salvaCSV(tr.D_losses, nomeFile_D_losses)
-        tr.salvaLoss(tr.D_losses, nomeFile_G_losses)
+        tr.salvaLoss(tr.D_losses, nomeFile_D_losses)
         tr.D_losses = []
         
 
