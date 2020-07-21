@@ -250,7 +250,7 @@ def main(pl, paramFile):
 
 
     print("Inizio apprendimento, tutti i dati saranno salvati in "+ nomeDir)
-    nomeFile_D_losses = os.path.join(nomeDir, pl["nomeModello"] + "_"+pl["nomeFileLosses"][1])
+    nomeFile_G_losses = os.path.join(nomeDir, pl["nomeModello"] + "_"+pl["nomeFileLosses"][0])
     nomeFile_D_losses = os.path.join(nomeDir, pl["nomeModello"] + "_"+pl["nomeFileLosses"][1])
     # For each epoch
     for epoch in range(pl["num_epochs"]):
@@ -272,8 +272,8 @@ def main(pl, paramFile):
                 print(oo + ss)
 
             # Save Losses for plotting later
-            tr.G_losses.append(datiTR[0].item())
-            tr.D_losses.append(datiTR[1].item())
+            tr.G_losses.append(str(datiTR[0].item()))
+            tr.D_losses.append(str(datiTR[1].item()))
 
         
 
@@ -283,10 +283,13 @@ def main(pl, paramFile):
 
         salvaImmagini(nomeDir, nomeFile, netG, fixed_noise)
 
-        tr.salvaCSV(tr.G_losses, nomeFile_G_losses)
+        #tr.salvaCSV(tr.G_losses, nomeFile_G_losses)
+        tr.salvaLoss(tr.G_losses, nomeFile_G_losses)
         tr.G_losses = []
-        tr.salvaCSV(tr.D_losses, nomeFile_D_losses)
-        tr_D_losses = []
+        #tr.salvaCSV(tr.D_losses, nomeFile_D_losses)
+        tr.salvaLoss(tr.D_losses, nomeFile_G_losses)
+        tr.D_losses = []
+        
 
         # salva i modelli ogni cadenza_epoche   
         if epoch % pl["cadenza_epoche"] == 0:

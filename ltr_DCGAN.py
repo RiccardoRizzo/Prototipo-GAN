@@ -131,3 +131,14 @@ def plot(nomeFileLosses):
     plt.legend()
     plt.show()
 
+
+#---------------------------------------------------
+def salvaLoss(lista, nomefile):
+    """
+    Salva una delle strutture di sopra in un file csv
+    """
+    with open(nomefile, 'a+', newline='') as myfile:
+    #with open(nomefile, 'w', newline='') as myfile:
+        stringa = "\n".join(lista)
+        myfile.write(stringa)
+
