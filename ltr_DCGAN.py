@@ -14,7 +14,7 @@ def trainingStep(i,  data,
                  netD, netG, 
                  device, nz, optimizerD, optimizerG, criterion):
     ############################
-    # (1) Update D network: maximize log(D(x)) + log(1 - D(G(z)))
+    # print(" (1) Update D network: maximize log(D(x)) + log(1 - D(G(z))) ")
     ###########################
     ## Train with all-real batch
     netD.zero_grad()
@@ -26,10 +26,12 @@ def trainingStep(i,  data,
     label = torch.full((b_size,), real_label, device=device)
     # Forward pass real batch through D
     output = netD(real_cpu).view(-1)
-
+    # print("size output D", str(output.size()))
     errD_real = criterion(output, label)
     # Calculate gradients for D in backward pass
+    # print("Error D backward")
     errD_real.backward()
+
     D_x = output.mean().item()      # valore in output per la statistica sull'apprendimento 
 
     ## Train with all-fake batch
@@ -51,7 +53,7 @@ def trainingStep(i,  data,
     optimizerD.step()
 
     ############################
-    # (2) Update G network: maximize log(D(G(z)))
+    # print ("(2) Update G network: maximize log(D(G(z))) ")
     ###########################
     netG.zero_grad()
     label.fill_(real_label)  # fake labels are real for generator cost

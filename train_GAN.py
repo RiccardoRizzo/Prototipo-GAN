@@ -35,7 +35,7 @@ import shutil
 ###  DI TRAINING ===============================
 sys.path.append("./Modelli")
 
-import GenDis5 as gd2
+import GenDis_b4 as gd2
 import ltr_DCGAN as tr
 # import ltr_LSGAN as tr # RICORDARSI CHE DISC. DEVE ESSERE SENZA SIGMOIDE IN OUT
 ###=============================================
@@ -256,7 +256,8 @@ def main(pl, paramFile):
     for epoch in range(pl["num_epochs"]):
         # For each batch in the dataloader
         for i, data in enumerate(dataloader, 0):
-            ## ADDESTRAMENTO DELLE RETI
+            #------------------------------------
+            # print("ADDESTRAMENTO DELLE RETI")
             datiTR = tr.trainingStep(i, data, 
                  real_label, fake_label, 
                  netD, netG, 

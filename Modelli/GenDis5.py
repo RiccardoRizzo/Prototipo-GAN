@@ -40,7 +40,9 @@ class Discriminator(nn.Module):
     def forward(self, x):
         y = x
         for i in range(len(self.main)):
+            print("input", str(y.size() ))
             y = self.main[i](y)
+            print("output", str(y.size() ))
         return y
 
 
@@ -76,8 +78,9 @@ class Generator(nn.Module):
 
     def forward(self, x):
         y = x
+        
         for i in range(len(self.main)):
-            y = self.main[i](y)
+            y = self.main[i](y)        
         return y
 
 

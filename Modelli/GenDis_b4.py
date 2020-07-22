@@ -55,21 +55,21 @@ class Discriminator(nn.Module):
 
         layers = []
 
-        layers.append(nn.Conv2d(nc, ndf, kernel_size, stride=stride, padding=padding, bias=False) )
+        layers.append(nn.Conv2d(nc, ndf, kernel_size, stride, padding=padding, bias=False) )
         layers.append(nn.LeakyReLU(0.2, inplace=True))
         # state size. (ndf) x 64 x 64
 
         #--------------------------------------------
         layers.append(DisLayerSN_d(ndf, 0))
         layers.append(DisLayerSN_d(ndf, 1))
-
         #--------------------------------------------
 
         d_out = stride**2
 
-        layers.append(sa.Self_Attn(ndf*d_out, "relu"))
-        
-        layers.append(nn.Conv2d(ndf * d_out, 1, kernel_size, stride=1, padding=0, bias=False))
+        # layers.append(sa.Self_Attn(ndf*d_out, "relu"))
+        # la dimensione del kernel e' 2 perche' 
+        # la dimensione delle immagine in input  e' 2 
+        layers.append(nn.Conv2d(ndf * d_out, 1, 2, stride, padding=0, bias=False))
         layers.append(nn.Sigmoid())
         # state size. 1
         
@@ -79,8 +79,11 @@ class Discriminator(nn.Module):
 
     def forward(self, x):
         y = x
+        #print("D_rete ingresso ", str(y.size()))
         for i in range(len(self.main)):
+            #print("D:in ", str(y.size()))
             y = self.main[i](y)
+            #print("D:out ", str(y.size()))
         return y
 
 
@@ -108,32 +111,33 @@ class Generator(nn.Module):
 
         layers = []
 
- 
         d_in = stride**2
-        layers.append( nn.ConvTranspose2d( nz, ngf * d_in, kernel_size, 1, 0, bias=False) )
+
+        layers.append( nn.ConvTranspose2d( nz, ngf * d_in, kernel_size, stride, padding, bias=False) )
         layers.append( nn.BatchNorm2d(ngf * d_in) )
         layers.append( nn.ReLU(True) )
-        # state size. (ngf*16) x 4 x 4
-            
+
+        #------------------------------------------
+        layers.append( GenLayerSN(ngf, 2) )
+        layers.append( GenLayerSN(ngf, 1) ) 
         #------------------------------------------
 
-        layers.append( GenLayerSN(ngf, 1) )
-        #------------------------------------------
-
-        layers.append(sa.Self_Attn(ngf,"relu"))    
+        #layers.append(sa.Self_Attn(ngf,"relu"))    
         
-        layers.append(nn.ConvTranspose2d(    ngf,      nc, kernel_size, stride, padding, bias=False) )
+        layers.append(nn.ConvTranspose2d( ngf, nc, kernel_size, stride, padding, bias=False) )
         layers.append(nn.Tanh() )
-            # state size. (nc) x 128 x 128
- 
 
         self.main = nn.ModuleList(layers)
         
 
     def forward(self, x):
+
         y = x
+        #print("G_rete ingresso ", str(y.size()))
         for i in range(len(self.main)):
+            #print("G:in ", str(y.size()))
             y = self.main[i](y)
+            #print("G:out ", str(y.size()))
         return y
 
 
