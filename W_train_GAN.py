@@ -249,12 +249,7 @@ def main(pl, paramFile):
         text_file.write(stringa)
         text_file.write("\nAlgoritmo apprendimento in " + tr.__file__)
     print(stringa)
-    # copio il file dei modelli
-    newPath = shutil.copy(gd2.__file__, nomeDir)
-    # copio il file del training
-    newPath = shutil.copy(tr.__file__, nomeDir)
-    # copio questo file nella directory
-    newPath = shutil.copy(__file__, nomeDir)
+ 
     #===================================================
 
     # Initialize BCELoss function

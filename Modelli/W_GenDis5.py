@@ -69,9 +69,10 @@ class Discriminator(nn.Module):
             layers.append(DisLayer(ndf, i))
 
         d_out = 2**k
-        layers.append(torch.clamp(nn.Conv2d(ndf * d_out, 1, 4, stride=1, padding=0, bias=False)), 0.0, 1.0)
+        layers.append(nn.Conv2d(ndf * d_out, 1, 4, stride=1, padding=0, bias=False))
+        #layers.append(torch.clamp(nn.Conv2d(ndf * d_out, 1, 4, stride=1, padding=0, bias=False)), 0.0, 1.0)
         #layers.append(nn.Sigmoid())
-        
+        layers.append(nn.LeakyReLU(0.2, inplace=True))
         # state size. 1
         
         
@@ -83,7 +84,7 @@ class Discriminator(nn.Module):
         y = x
         for i in range(len(self.main)):
             y = self.main[i](y)
-        
+        y = torch.clamp(y, 0.0, 1.0)
         return y
 
 
