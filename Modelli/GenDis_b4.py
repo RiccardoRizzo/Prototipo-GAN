@@ -41,8 +41,8 @@ def DisLayerSN_d(ndf, k):
 
     out = nn.Sequential(nn.utils.spectral_norm(
                         nn.Conv2d(ndf*d_in, ndf*d_out, kernel_size, stride=stride, padding=padding, bias=False)),                        
-                        nn.Dropout2d(),
-                        nn.BatchNorm2d(ndf * d_out), 
+                        #nn.Dropout2d(),
+                        #nn.BatchNorm2d(ndf * d_out), 
                         nn.LeakyReLU(0.2, inplace=True) )
     return out
 
@@ -69,6 +69,7 @@ class Discriminator(nn.Module):
         # layers.append(sa.Self_Attn(ndf*d_out, "relu"))
         # la dimensione del kernel e' 2 perche' 
         # la dimensione delle immagine in input  e' 2 
+        layers.append(nn.Dropout2d())
         layers.append(nn.Conv2d(ndf * d_out, 1, 2, stride, padding=0, bias=False))
         layers.append(nn.Sigmoid())
         # state size. 1
@@ -122,7 +123,7 @@ class Generator(nn.Module):
         layers.append( GenLayerSN(ngf, 1) ) 
         #------------------------------------------
 
-        #layers.append(sa.Self_Attn(ngf,"relu"))    
+        layers.append(sa.Self_Attn(ngf,"relu"))    
         
         layers.append(nn.ConvTranspose2d( ngf, nc, kernel_size, stride, padding, bias=False) )
         layers.append(nn.Tanh() )
