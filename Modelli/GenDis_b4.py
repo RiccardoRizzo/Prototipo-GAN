@@ -119,11 +119,12 @@ class Generator(nn.Module):
         layers.append( nn.ReLU(True) )
 
         #------------------------------------------
+spostata        layers.append(sa.Self_Attn(ngf,"relu")) 
         layers.append( GenLayerSN(ngf, 2) )
         layers.append( GenLayerSN(ngf, 1) ) 
         #------------------------------------------
 
-        layers.append(sa.Self_Attn(ngf,"relu"))    
+           
         
         layers.append(nn.ConvTranspose2d( ngf, nc, kernel_size, stride, padding, bias=False) )
         layers.append(nn.Tanh() )
