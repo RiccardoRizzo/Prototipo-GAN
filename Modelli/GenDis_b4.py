@@ -121,7 +121,7 @@ class Generator(nn.Module):
         #------------------------------------------
        
         layers.append( GenLayerSN(ngf, 2) )
-        layers.append(sa.Self_Attn(ngf*4,"relu")) 
+        # layers.append(sa.Self_Attn(ngf*4,"relu")) 
         layers.append( GenLayerSN(ngf, 1) ) 
         #------------------------------------------
 
