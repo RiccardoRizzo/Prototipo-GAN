@@ -36,7 +36,7 @@ import shutil
 sys.path.append("./Modelli")
 
 import GenDis_b4 as gd2
-import ltr_DCGAN as tr
+import ltr2_DCGAN as tr
 # import ltr_LSGAN as tr # RICORDARSI CHE DISC. DEVE ESSERE SENZA SIGMOIDE IN OUT
 ###=============================================
 
