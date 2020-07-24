@@ -3,6 +3,7 @@ import torch.nn as nn
 import self_attention as sa
 import torch
 
+
 # # Parameters to define the model.
 # params = {
 #     'nc' : 3,# Number of channles in the training images. For coloured images this is 3.
