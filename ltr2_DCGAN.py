@@ -16,7 +16,7 @@ def trainingStep(i,  data,
 
 
     # ADDESTRO IL dISCRIMINATORE 2 VOLTE  PIU' DEL gENERATORE
-    for i in rannge(2):
+    for i in range(2):
         ############################
         # print(" (1) Update D network: maximize log(D(x)) + log(1 - D(G(z))) ")
         ###########################

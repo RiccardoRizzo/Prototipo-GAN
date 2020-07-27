@@ -36,7 +36,7 @@ import shutil
 sys.path.append("./Modelli")
 
 import GenDis_b4 as gd2
-import ltr2_DCGAN as tr
+import ltr_DCGAN as tr
 # import ltr_LSGAN as tr # RICORDARSI CHE DISC. DEVE ESSERE SENZA SIGMOIDE IN OUT
 ###=============================================
 
@@ -299,7 +299,7 @@ def main(pl, paramFile):
     # Fine del training =======================================
     nomeFile = pl["nomeModello"]+ "_"+"FINALE"
     salvaCheckpoint(nomeDir, nomeFile, netD, netG, optimizerD, optimizerG, fixed_noise)
-
+    salvaImmagini(nomeDir, nomeFile, netG, fixed_noise)
 
     #nomeFile_G_losses = os.path.join(nomeDir, pl["nomeModello"] + "_"+pl["nomeFileLosses"][0])
     #tr.salvaCSV(tr.G_losses, nomeFile_G_losses)
