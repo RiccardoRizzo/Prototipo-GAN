@@ -67,7 +67,7 @@ class Discriminator(nn.Module):
 
         d_out = stride**2
 
-        layers.append(nn.Dropout2d())
+        #layers.append(nn.Dropout2d())
         layers.append(nn.Conv2d(ndf * d_out, 1, 2, stride, padding=0, bias=False))
         layers.append(nn.Sigmoid())
         # state size. 1
@@ -116,10 +116,8 @@ class Generator(nn.Module):
         layers.append( nn.BatchNorm2d(ngf * d_in) )
         layers.append( nn.ReLU(True) )
 
-        #------------------------------------------
-       
+        #------------------------------------------      
         layers.append( GenLayerSN(ngf, 2) )
-        # layers.append(sa.Self_Attn(ngf*4,"relu")) 
         layers.append( GenLayerSN(ngf, 1) ) 
         #------------------------------------------
 
