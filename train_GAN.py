@@ -286,8 +286,9 @@ def main(pl, paramFile):
                 print(oo + ss)
 
             # Save Losses for plotting later
-            tr.G_losses.append(str(datiTR[0].item()))
-            tr.D_losses.append(str(datiTR[1].item()))
+            # l'output dal training step [errD, errG, D_x, D_G_z1, D_G_z2]
+            tr.D_losses.append(str(datiTR[0].item()))
+            tr.G_losses.append(str(datiTR[1].item()))
 
             torch.cuda.empty_cache()
 
