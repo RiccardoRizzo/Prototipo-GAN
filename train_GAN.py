@@ -289,6 +289,8 @@ def main(pl, paramFile):
             tr.G_losses.append(str(datiTR[0].item()))
             tr.D_losses.append(str(datiTR[1].item()))
 
+            torch.cuda.empty_cache()
+
         # Fine dell'epoca --------------------------------------
         # salva un provino delle immagini generate ed i modelli relativi
         nomeFile = pl["nomeModello"]+ "_" +str(epoch)
