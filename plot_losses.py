@@ -22,10 +22,15 @@ def findLossFiles(dirModello):
 def loadLoss(nomefile):
     with open(nomefile, 'r') as f:
         buf = f.readlines()
+
+    # elimino il primo valore
+    num_minibatch = int(buf[0]. strip("#"))
+    buf = buf[1:]
+
     buf = [float(x.strip()) for x in buf]
     loss = np.array(buf)
 
-    return loss
+    return loss, num_minibatch
 
 #---------------------------------------------------
 def plotLosses(dirModello):
@@ -35,11 +40,12 @@ def plotLosses(dirModello):
 
     nomeFile = os.path.join(dirModello, nomeFileLosses[0])
     print(nomeFile)
-    G_losses = loadLoss(nomeFile)
+    G_losses, n_b = loadLoss(nomeFile)
+  
             
     nomeFile = os.path.join(dirModello, nomeFileLosses[1])
     print(nomeFile)
-    D_losses = loadLoss(nomeFile)
+    D_losses, n_b = loadLoss(nomeFile)
 
     
     plt.figure(figsize=(10,5))
@@ -47,6 +53,14 @@ def plotLosses(dirModello):
     plt.plot(G_losses,label="G")
     plt.plot(D_losses,label="D")
     plt.xlabel("iterations")
+
+    xcoords = [x  for x in range(n_b, len(G_losses)+1, n_b) ]
+
+
+    for xc in xcoords:
+        plt.axvline(x=xc,  color='k', linestyle='--')
+
+
     plt.ylabel("Loss")
     plt.legend()
     plt.show()
@@ -57,6 +71,10 @@ if __name__ == "__main__":
     try:
         dirModello = sys.argv[1]
         plotLosses(dirModello)
-    except:
-        print('manca la directory che contiene i file di nome *losses.csv')
+
+    except Exception as ex:
+        template = "An exception of type {0} occurred. Arguments:\n{1!r}"
+        message = template.format(type(ex).__name__, ex.args)
+        print(message)
+        #print('manca la directory che contiene i file di nome *losses.csv')
         sys.exit(1)  # abort
