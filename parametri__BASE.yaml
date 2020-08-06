@@ -2,9 +2,12 @@
 ###### FILE MODIFICATO PER LA MACCHINA DEEP
 #################################################################
 # pretrained weights file for generator (vuoto se NoneType)
+# serve a proseguire un precedente training
 netD_checkpoint : 
 netG_checkpoint : 
-# nome del modello
+# nome del modello. 
+# questa stringa sara' parte del nome directory (si aggiunge la data e l'ora)
+# che conterra' i risultati e sorgenti usati
 nomeModello : "Prova_2SA"
 
 #nomeFile per i grafici losses
@@ -14,16 +17,20 @@ nomeFileLosses : ["G_losses.csv", "D_losses.csv"]
 dataroot : "~/Focus/Datasets/immagini/celeba"
 
 # Number of workers for dataloader
+# questo puo' essere ridotto a 1 se si hanno problemi di memoria
 workers : 2
 
-# Batch size during training
+# Batch size during training 
 batch_size : 64
 
 # Spatial size of training images. All images will be resized to this
 #   size using a transformer.
+# Per i modelli Genb4 questo deve essere una potenza di 4
+# Per gli altri  una potenza di 2
 image_size : 64
 
 # Number of channels in the training images. For color images this is 3
+# da non modificare
 nc : 3
 
 # Size of z latent vector (i.e. size of generator input)
@@ -39,6 +46,7 @@ ndf : 128
 num_epochs : 50
 
 # cadenza salvataggio modelli
+# Le immagini di prova sono salvate ogni epoca
 cadenza_epoche : 10
 
 # Learning rate for optimizers
@@ -70,9 +78,11 @@ beta1 : 0.7
 beta2 : 0.999
 
 # Number of GPUs available. Se si usa 0 si forza il CPU mode.
+# altrimenti mettere il numero di GPU da usare
 ngpu : 0
 
 # Numero di campioni da usare nel debug, se -1 allora si usano tutti i sample nel dataset
+# Sare a fare prove un un subset dela dataset per training veloci
 n_samples : 10000
 
 # Number of layers log_2 (image_size)-3
