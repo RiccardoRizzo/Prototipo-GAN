@@ -63,7 +63,7 @@ Il programma cerca i file di loss e crea il grafico che poi va salvato.
 ---
 ---
 ---
-
+---
 
 ## Una parte della storia delle modifiche
 ###  23 giugno 2020
