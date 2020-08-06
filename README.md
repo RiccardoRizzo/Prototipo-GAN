@@ -1,6 +1,17 @@
 # DCGAN :: modello a risoluzione maggiore
 ## Uso del programma
-Nel programma train_GAN cambiare la parte
+Il programma si avvia con 
+
+```bash
+python train_GAN.py parametri.yaml
+```
+
+parametri e' il file che contiene tutti i dettagli di configurazione della rete e del training .
+
+Il programma crea una directory dove copia il file parametri e i sorgenti usati (in modo da lasciare traccia di quanto fatto). Nella stessa directory sono salvate le immagini generate durante il training ed i file intermedi dei modelli, utili se si vuole irprendere l'apprendimento.
+
+Se si vuole cambiare modello e algoritmo di training allora occorre cambiare la parte
+
 ```python
 ###=============================================
 ###  DEFINIZIONE MODELLO GAN E ALGORITMO 
@@ -12,7 +23,15 @@ import GenDis_SA as gd2
 import ltr_LSGAN as tr
 ###=============================================
 ```
-in modo da importare la architettura voluta e l'algoritmo di training adatto.
+nel file train_GAN.py. Basta cambiare, per esempio GenDis_SA, e lasciare l'alias.
+
+I modelli di GAN sono della directory Modelli. I piu' vecchi fanno riferimento ai layer nel file layers.py, ma generalmente il layer e' ricopiato del file del modello per chiarezza.
+Il layer di Self Attention e' in un file a parte (ed e' implementato male perche' non compare nella stampa dei layer della rete).
+
+La maggior parte dei modelli prosegue dimezzando (nel caso del Discriminatore) o raddoppiando (nel caso del Generatore) la dimensione delle immagini man mano che si prosegue lungo la rete.
+In questi modelli la dimensione della immagine (letta dal file di parametri) e' usata per calcolare il numero di layer aggiunti dinamicamente (c'e' un ciclo for nel file del modello).
+
+Il modello GenDis_b4 invece quadruplica la dimensione ad ogni layer, questo consente di ottenere immagini piu' grandi con minore uso di memoria (e reti meno profonde). In qusto caso il ciclo for non c'e', i layer sono "in chiaro" nel file e la dimensione dichiarata nel file parametri serve a ridimensionare le immagini del dataset (e quindi deve essere sempre quella giusta).
 
 La parte sotto:
 ```python
@@ -30,14 +49,21 @@ La parte sotto:
 
 ```
 e' da customizzare e riguarda la stampa del report ad ogni batch.
+Al momento non e' importante.
 
-Lanciare quindi:
+
+### Grafico della loss
+
+Se si vuole avere un grafico della loss occorre usare:
 ```bash
-python train_GAN.py parametri.yaml
+python plot_losses.py <nome_directory>
 ```
+Il programma cerca i file di loss e crea il grafico che poi va salvato.
+
+---
 
 
-## Storia delle modifiche
+## Una parte della storia delle modifiche
 ###  23 giugno 2020
 incapsulati trainingStep e accessori in un unico file di libreria.
 Il file ltr_**GAN.py diventa il file da cambiare quando occorre implementare un nuovo algoritmo di training. Il file va chiamato dentro train_GAN.py 
