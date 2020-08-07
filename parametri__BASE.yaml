@@ -27,7 +27,7 @@ batch_size : 64
 #   size using a transformer.
 # Per i modelli Genb4 questo deve essere una potenza di 4
 # Per gli altri  una potenza di 2
-image_size : 64
+image_size : 256
 
 # Number of channels in the training images. For color images this is 3
 # da non modificare
