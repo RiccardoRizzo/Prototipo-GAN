@@ -6,6 +6,12 @@ netD_checkpoint :
 netG_checkpoint :
 # nome del modello
 nomeModello : "GANb4_ductal_carcinoma_"
+# nome del file del modello  da importare
+file_modello : "GenDis_b4"
+posizione_file_modello : "./Modelli"
+# nome del file relativo all'algoritmo del passo di apprendimento
+file_training_step : "ltr_DCGAN"
+posizione_file_training_step : "."
 
 #nomeFile per i grafici losses
 nomeFileLosses : ["G_losses.csv", "D_losses.csv"]

@@ -1,3 +1,6 @@
+"""
+Modello GAN con aumento *4 della dimensione della immagine 
+"""
 import torch.nn as nn
 #import Layers as ll
 #import self_attention as sa

@@ -24,6 +24,7 @@ import yaml
 import sys
 import math
 import pathlib
+import importlib
 
 from PIL import Image
 
@@ -31,15 +32,7 @@ from datetime import datetime
 import os
 import shutil
 
-###=============================================
-###  DEFINIZIONE MODELLO GAN E ALGORITMO 
-###  DI TRAINING ===============================
-sys.path.append("./Modelli")
 
-import GenDis_b4 as gd2
-import ltr_DCGAN as tr
-# import ltr_LSGAN as tr # RICORDARSI CHE DISC. DEVE ESSERE SENZA SIGMOIDE IN OUT
-###=============================================
 
 # Adam parameters
 #=================
@@ -164,10 +157,10 @@ def creaDocu(pl, paramFile):
     # e copia i file usati (questo compreso)  nella directory 
     # dell'esperimento per riferimenti futuri
     today = datetime.now()
-    #nomeDir = "./" + pl["nomeModello"] + "_" +today.strftime('%Y_%m_%d_%H_%M')
+    
     nomeDir = pl["outroot"] +"/" + pl["nomeModello"] + "_" +today.strftime('%Y_%m_%d_%H_%M')
-    #os.mkdir(nomeDir)
-    # permette di creare directory tree
+   
+    # permette di creare directory tree 
     pathlib.Path(nomeDir).mkdir(parents=True, exist_ok=True) 
 
     nomeDirPy = nomeDir + "/sources"
@@ -202,10 +195,18 @@ def main(pl, paramFile):
     #random.seed(manualSeed)
     #torch.manual_seed(manualSeed)
 
+
+
+    #import GenDis_b4 as gd2
+    #import ltr_DCGAN as tr
+    # import ltr_LSGAN as tr # RICORDARSI CHE DISC. DEVE ESSERE SENZA SIGMOIDE IN OUT
+    ###=============================================
+
     # number of layers
     k = int(math.log(pl["image_size"], 2)) - 3
     # k = pl["k"]
 
+    # import del modello deciso nel file di configurazione
 
     # creazione del dataloader =============================================================
     dataloader = createDataloader(pl["image_size"], pl["dataroot"], pl["n_samples"], pl["batch_size"], pl["workers"])
@@ -326,6 +327,20 @@ if __name__ == "__main__":
     with open(inputFile) as file:
         # The FullLoader parameter handles the conversion from YAML
         # scalar values to Python the dictionary format
-        param_list = yaml.load(file, Loader=yaml.FullLoader)
+        pl = yaml.load(file, Loader=yaml.FullLoader)
 
-    main(param_list, inputFile)
+    ###=============================================
+    # import globale del modello da addestrare 
+    ###=============================================
+    ###  DEFINIZIONE MODELLO GAN 
+    sys.path.append(pl["posizione_file_modello"])
+    module_name = pl["file_modello"]
+    gd2 = importlib.import_module(module_name)
+
+    ### DEFINIZIONE ALGORITMO DI TRAINING 
+    sys.path.append(pl["posizione_file_training_step"])
+    module_name = pl["file_training_step"]
+    tr = importlib.import_module(module_name) 
+
+    # LANCIO DEL PROGRAMMA
+    main(pl, inputFile)
