@@ -35,7 +35,7 @@ import shutil
 ###  DI TRAINING ===============================
 sys.path.append("./Modelli")
 
-import GenDis_b4 as gd2
+import GenDis_b4_SA as gd2
 import ltr_DCGAN as tr
 # import ltr_LSGAN as tr # RICORDARSI CHE DISC. DEVE ESSERE SENZA SIGMOIDE IN OUT
 ###=============================================
@@ -250,8 +250,21 @@ def main(pl, paramFile):
 
 
     print("Inizio apprendimento, tutti i dati saranno salvati in "+ nomeDir)
+    
+    # crea i file per le perdite e scrive il riferimento per i minibatch =====================
     nomeFile_G_losses = os.path.join(nomeDir, pl["nomeModello"] + "_"+pl["nomeFileLosses"][0])
     nomeFile_D_losses = os.path.join(nomeDir, pl["nomeModello"] + "_"+pl["nomeFileLosses"][1])
+    # salva il numero di minibatch per epoca per creare dei riferimenti
+    with open(nomeFile_G_losses, 'a+', newline='') as myfile:
+    #with open(nomefile, 'w', newline='') as myfile:
+        stringa = "# " + str( len(dataloader) ) + "\n"
+        myfile.write(stringa)
+        
+    with open(nomeFile_D_losses, 'a+', newline='') as myfile:
+        stringa = "# " + str( len(dataloader) ) + "\n"
+        myfile.write(stringa)
+
+    # INIZIO APPRENDIMENTO ===================================================================
     # For each epoch
     for epoch in range(pl["num_epochs"]):
         # For each batch in the dataloader
@@ -273,18 +286,17 @@ def main(pl, paramFile):
                 print(oo + ss)
 
             # Save Losses for plotting later
-            tr.G_losses.append(str(datiTR[0].item()))
-            tr.D_losses.append(str(datiTR[1].item()))
+            # l'output dal training step [errD, errG, D_x, D_G_z1, D_G_z2]
+            tr.D_losses.append(str(datiTR[0].item()))
+            tr.G_losses.append(str(datiTR[1].item()))
 
-        
+            torch.cuda.empty_cache()
 
         # Fine dell'epoca --------------------------------------
-        
-        # salva un provino delle immagini generate   
-        if epoch % pl["cadenza_epoche"] == 0:
-            # salva un provino delle immagini generate 
-            nomeFile = pl["nomeModello"]+ "_" +str(epoch)
-            salvaImmagini(nomeDir, nomeFile, netG, fixed_noise)
+        # salva un provino delle immagini generate ed i modelli relativi
+        nomeFile = pl["nomeModello"]+ "_" +str(epoch)
+
+        salvaImmagini(nomeDir, nomeFile, netG, fixed_noise)
 
         #tr.salvaCSV(tr.G_losses, nomeFile_G_losses)
         tr.salvaLoss(tr.G_losses, nomeFile_G_losses)
@@ -293,20 +305,15 @@ def main(pl, paramFile):
         tr.salvaLoss(tr.D_losses, nomeFile_D_losses)
         tr.D_losses = []
         
-
         # salva i modelli ogni cadenza_epoche   
         if epoch % pl["cadenza_epoche"] == 0:
             salvaCheckpoint(nomeDir, nomeFile, netD, netG, optimizerD, optimizerG, fixed_noise)
 
-    # Fine del training =======================================
+    # FINE APPRENDIMENTO =====================================================================
     nomeFile = pl["nomeModello"]+ "_"+"FINALE"
     salvaCheckpoint(nomeDir, nomeFile, netD, netG, optimizerD, optimizerG, fixed_noise)
+    salvaImmagini(nomeDir, nomeFile, netG, fixed_noise)
 
-
-    #nomeFile_G_losses = os.path.join(nomeDir, pl["nomeModello"] + "_"+pl["nomeFileLosses"][0])
-    #tr.salvaCSV(tr.G_losses, nomeFile_G_losses)
-    #nomeFile_D_losses = os.path.join(nomeDir, pl["nomeModello"] + "_"+pl["nomeFileLosses"][1])
-    #tr.salvaCSV(tr.D_losses, nomeFile_D_losses)
     print("salvati i dati dell'apprendimento in ", nomeDir)
 
 

@@ -1,0 +1,90 @@
+#################################################################
+###### FILE MODIFICATO PER LA MACCHINA DEEP
+#################################################################
+# pretrained weights file for generator (vuoto se NoneType)
+netD_checkpoint :
+netG_checkpoint :
+
+# nome del modello
+nomeModello : "GANb4_mucinous_carcinoma_sa_"
+
+#nomeFile per i grafici losses
+nomeFileLosses : ["G_losses.csv", "D_losses.csv"]
+
+# Root directory for dataset
+dataroot : "./dataset/train/mucinous_carcinoma"
+
+# Number of workers for dataloader
+workers : 2
+
+# Batch size during training
+batch_size : 64
+
+# Batch multiplier --- valori interi da 1 a N
+# indica il numero di batch_size che formeranno un mini_batch
+# l'aggiornamento della rete sara fatto dopo
+# batch_multiplier * batch_size campioni
+# In questo modo si occupa meno la memoria
+# diminuendo il numero di campioni caricato
+batch_multiplier : 4
+
+# Spatial size of training images. All images will be resized to this
+#   size using a transformer.
+image_size : 256
+
+# Number of channels in the training images. For color images this is 3
+nc : 3
+
+# Size of z latent vector (i.e. size of generator input)
+nz : 100
+
+# Size of feature maps in generator (ngf) and discriminator (ndf)
+# Il numero di kernel influisce sulla grandezza dei layer delle reti, ma non sulla
+# grandezza della immagine
+ngf : 64
+ndf : 64
+
+# Number of training epochs
+num_epochs : 10000
+
+cadenza_epoche : 500
+
+
+# Learning rate for optimizers
+lrd : 0.00005
+lrg : 0.00005
+
+# Beta1 hyperparam for Adam optimizers
+# sembra che un valore accettabile per beta1 sia 0.5
+# https://arxiv.org/pdf/1511.06434.pdf
+
+# Adam parameters
+#=================
+# alpha. Also referred to as the learning rate or step size.
+#        The proportion that weights are updated (e.g. 0.001).
+#        Larger values (e.g. 0.3) results in faster initial learning
+#        before the rate is updated. Smaller values (e.g. 1.0E-5)
+#        slow learning right down during training
+
+# beta1. The exponential decay rate for the first moment estimates (e.g. 0.9).
+
+# beta2. The exponential decay rate for the second-moment estimates (e.g. 0.999).
+#        This value should be set close to 1.0 on problems with a sparse gradient
+#        (e.g. NLP and computer vision problems).
+
+# epsilon. Is a very small number to prevent any division by
+#          zero in the implementation (e.g. 10E-8).
+#-------------------------------------------------
+beta1 : 0.7
+beta2 : 0.999
+
+# Number of GPUs available. Se si usa 0 si forza il CPU mode.
+ngpu : 1
+
+# Numero di campioni da usare nel debug, se -1 allora si usano tutti i sample nel dataset
+n_samples : -1
+
+# Number of layers log_2 (image_size)-3
+# k : 2
+# calcolato all'interno del programma considerando
+# k = int(math.log(image_size, 2)) - 3

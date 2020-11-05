@@ -1,8 +1,7 @@
 import torch.nn as nn
 #import Layers as ll
-#import self_attention as sa
+import self_attention as sa
 import torch
-
 
 # # Parameters to define the model.
 # params = {
@@ -58,7 +57,7 @@ class Discriminator(nn.Module):
 
         layers.append(nn.Conv2d(nc, ndf, kernel_size, stride, padding=padding, bias=False) )
         layers.append(nn.LeakyReLU(0.2, inplace=True))
-
+        # state size. (ndf) x 64 x 64
 
         #--------------------------------------------
         layers.append(DisLayerSN_d(ndf, 0))
@@ -67,7 +66,9 @@ class Discriminator(nn.Module):
 
         d_out = stride**2
 
-        #layers.append(nn.Dropout2d())
+        # layers.append(sa.Self_Attn(ndf*d_out, "relu"))
+        # la dimensione del kernel e' 2 perche' 
+        # la dimensione delle immagine in input  e' 2 
         layers.append(nn.Conv2d(ndf * d_out, 1, 2, stride, padding=0, bias=False))
         layers.append(nn.Sigmoid())
         # state size. 1
@@ -116,12 +117,12 @@ class Generator(nn.Module):
         layers.append( nn.BatchNorm2d(ngf * d_in) )
         layers.append( nn.ReLU(True) )
 
-        #------------------------------------------      
+        #------------------------------------------
         layers.append( GenLayerSN(ngf, 2) )
         layers.append( GenLayerSN(ngf, 1) ) 
         #------------------------------------------
 
-           
+        layers.append(sa.Self_Attn(ngf,"relu"))    
         
         layers.append(nn.ConvTranspose2d( ngf, nc, kernel_size, stride, padding, bias=False) )
         layers.append(nn.Tanh() )
