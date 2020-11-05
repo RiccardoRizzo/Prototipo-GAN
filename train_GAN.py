@@ -23,6 +23,7 @@ import csv
 import yaml
 import sys
 import math
+import pathlib
 
 from PIL import Image
 
@@ -163,8 +164,11 @@ def creaDocu(pl, paramFile):
     # e copia i file usati (questo compreso)  nella directory 
     # dell'esperimento per riferimenti futuri
     today = datetime.now()
-    nomeDir = "./" + pl["nomeModello"] + "_" +today.strftime('%Y_%m_%d_%H_%M')
-    os.mkdir(nomeDir)
+    #nomeDir = "./" + pl["nomeModello"] + "_" +today.strftime('%Y_%m_%d_%H_%M')
+    nomeDir = pl["outroot"] +"/" + pl["nomeModello"] + "_" +today.strftime('%Y_%m_%d_%H_%M')
+    #os.mkdir(nomeDir)
+    # permette di creare directory tree
+    pathlib.Path(nomeDir).mkdir(parents=True, exist_ok=True) 
 
     nomeDirPy = nomeDir + "/sources"
     os.mkdir(nomeDirPy)
